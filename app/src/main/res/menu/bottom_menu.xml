@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@android:drawable/ic_menu_today"
+        android:title="Главная" />
+    <item
+        android:id="@+id/nav_instruments"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="Инструменты" />
+
+    <item
+        android:id="@+id/placeholder"
+        android:title=""
+        android:enabled="false" />
+
+    <item
+        android:id="@+id/nav_interactive"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="Интерактив" />
+    <item
+        android:id="@+id/nav_garden"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="Мой сад" />
+</menu>

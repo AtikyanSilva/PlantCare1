@@ -1,5 +1,6 @@
 package atikyan.silva.plantcare;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Patterns;
@@ -14,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
-    private Button btnLogin, btnSignUp, btnGuest;
+    private Button btnLogin, btnSignUp, btnGuest, btnNext;
     private ImageView ivTogglePassword;
 
     private boolean isPasswordVisible = false;
@@ -24,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-
-        // init views
+        btnNext = findViewById(R.id.btnNextActivity); // ID должен совпадать с тем, что в XML
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
@@ -84,6 +84,11 @@ public class MainActivity extends AppCompatActivity {
         btnGuest.setOnClickListener(v ->
                 Toast.makeText(this, "Guest mode", Toast.LENGTH_SHORT).show()
         );
+        btnNext.setOnClickListener(v -> {
+            // Создаем "намерение" перейти во вторую активити
+            Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+            startActivity(intent);
+        });
     }
 
     private boolean isValidEmail(String email) {

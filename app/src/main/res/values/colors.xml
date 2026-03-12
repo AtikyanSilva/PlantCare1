@@ -9,8 +9,11 @@
     <color name="text_secondary">#636E72</color>
     <color name="soft_green">#5E7D6A</color>
     <color name="light_green_bg">#EEF2EE</color>
-    <color name="sage_green">#5B7B68</color>
     <color name="sage_light">#EEF2EE</color>
     <color name="text_gray">#7A8A81</color>
     <color name="background_page">#F9FAF9</color>
+    <color name="sage_green">#5E7D6A</color>
+    <color name="background_light">#F8F9F5</color>
+    <color name="search_bg_color">#EFEEEC</color>
+
     </resources>
