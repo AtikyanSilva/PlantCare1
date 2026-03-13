@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA">
+    android:background="#FDFDFB">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -24,71 +24,73 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Добро пожаловать!"
-                android:textColor="#1A1A1A"
-                android:textSize="26sp"
+                android:textColor="#122A16"
+                android:textSize="28sp"
                 android:fontFamily="sans-serif-black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="Что будем растить сегодня?"
-                android:textColor="#757575"
-                android:textSize="15sp" />
+                android:textColor="#5C7260"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/searchBar"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_marginTop="22dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="28dp"
                 android:background="@drawable/search_bg"
                 android:drawableStart="@android:drawable/ic_menu_search"
-                android:drawablePadding="12dp"
-                android:hint="Поиск"
-                android:paddingHorizontal="18dp"
-                android:textColorHint="#BDBDBD"
+                android:drawablePadding="14dp"
+                android:hint="Найти растение..."
+                android:paddingHorizontal="20dp"
+                android:textColorHint="#A8B7AD"
                 android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardDetect"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
+                    android:layout_marginVertical="10dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="26dp"
-                    app:cardElevation="2dp">
+                    app:cardCornerRadius="30dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#FFFFFF">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:padding="20dp">
+                        android:padding="20dp"
+                        android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="90dp"
+                            android:layout_height="90dp"
                             android:src="@drawable/detect"
                             android:scaleType="centerInside" />
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
+                            android:layout_marginStart="16dp"
                             android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Распознать растение"
-                                android:textColor="#1A1A1A"
+                                android:text="Распознать"
+                                android:textColor="#122A16"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
@@ -96,8 +98,19 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Определить вид по фото"
-                                android:textColor="#757575"
-                                android:textSize="14sp" />
+                                android:textColor="#6A8071"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:layout_marginTop="12dp"
+                                android:background="@drawable/button_green"
+                                android:gravity="center"
+                                android:text="Распознать"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -106,46 +119,58 @@
                     android:id="@+id/cardDiagnose"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
+                    android:layout_marginVertical="10dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="26dp"
-                    app:cardElevation="2dp">
+                    app:cardCornerRadius="30dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#FFFFFF">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:padding="20dp">
+                        android:padding="20dp"
+                        android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="90dp"
+                            android:layout_height="90dp"
                             android:src="@drawable/diagnose"
                             android:scaleType="centerInside" />
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
+                            android:layout_marginStart="16dp"
                             android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Диагностика"
-                                android:textColor="#1A1A1A"
+                                android:textColor="#122A16"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Вылечить болезни листьев"
-                                android:textColor="#757575"
-                                android:textSize="14sp" />
+                                android:text="Проверить здоровье"
+                                android:textColor="#6A8071"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:layout_marginTop="12dp"
+                                android:background="@drawable/button_green"
+                                android:gravity="center"
+                                android:text="Диагностика"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -156,8 +181,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="Совет дня"
-                android:textColor="#1A1A1A"
-                android:textSize="20sp"
+                android:textColor="#122A16"
+                android:textSize="22sp"
                 android:fontFamily="sans-serif-medium" />
 
             <androidx.cardview.widget.CardView
@@ -165,7 +190,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 app:cardCornerRadius="26dp"
-                app:cardElevation="1dp">
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="#F1F5F2">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -191,7 +217,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Секреты сочного урожая на окне"
+                            android:text="Секреты урожая на окне"
                             android:textSize="13sp"
                             android:textColor="#757575"/>
 
@@ -199,14 +225,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:background="@drawable/advice"
+                            android:background="@drawable/label_bg_comfortable"
                             android:paddingHorizontal="12dp"
                             android:paddingVertical="5dp">
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="🌱 Полезное | 1 мин"
-                                android:textColor="#757575"
+                                android:text="🌱 Полезное"
+                                android:textColor="#FFFFFF"
                                 android:textSize="11sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -215,7 +241,8 @@
                     <ImageView
                         android:layout_width="75dp"
                         android:layout_height="75dp"
-                        android:src="@drawable/advice" />
+                        android:src="@drawable/advice"
+                        android:scaleType="centerCrop"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -227,7 +254,7 @@
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:layout_gravity="bottom"
-        android:backgroundTint="@android:color/white"
+        android:backgroundTint="#FFFFFF"
         app:fabAlignmentMode="center"
         app:fabCradleMargin="10dp"
         app:fabCradleRoundedCornerRadius="40dp"
@@ -239,10 +266,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
-            app:elevation="0dp"
             app:labelVisibilityMode="labeled"
-            app:itemIconTint="#757575"
-            app:itemTextColor="#757575"
+            app:itemIconTint="#8C9E93"
+            app:itemTextColor="#8C9E93"
             app:menu="@menu/bottom_menu" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
@@ -257,8 +283,6 @@
         app:maxImageSize="32dp"
         app:tint="@android:color/white"
         app:layout_anchor="@id/bottomAppBar"
-        app:elevation="0dp"
-        app:borderWidth="0dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.App.Circle" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
