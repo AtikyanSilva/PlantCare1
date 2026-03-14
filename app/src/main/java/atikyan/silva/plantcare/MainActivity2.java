@@ -50,7 +50,6 @@ public class MainActivity2 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         // Регистрация камеры
         cameraLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -58,7 +57,11 @@ public class MainActivity2 extends AppCompatActivity {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Bundle extras = result.getData().getExtras();
                         Bitmap imageBitmap = (Bitmap) extras.get("data");
-                        sendImageToAI(imageBitmap);
+
+                        // ПРОВЕРКА: Если картинка пришла, отправляем её в AI
+                        if (imageBitmap != null) {
+                            sendImageToAI(imageBitmap);
+                        }
                     }
                 }
         );
@@ -100,9 +103,10 @@ public class MainActivity2 extends AppCompatActivity {
         }
 
         // ЗАМЕНИ НА СВОЙ КЛЮЧ:
-        String apiKey = "AIzaSyC7EOTnPxCtXoiSR3ALD2WcgqfUPv0Hj14";
+        String apiKey = "AIzaSyCNShYWxbkQbZIEgBIYzF5sDd7hX07KvFI";
 
-        GenerativeModel gm = new GenerativeModel("gemini-1.5-flash", apiKey);
+        // Используем актуальную модель 2.5, она точно есть на серверах v1
+        GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", apiKey);
         GenerativeModelFutures model = GenerativeModelFutures.from(gm);
 // Увеличим Bitmap, если он пришел слишком маленьким (эмуляция лучшего качества)
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 1024, 1024, true);
