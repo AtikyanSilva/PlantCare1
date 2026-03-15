@@ -2,10 +2,12 @@ package atikyan.silva.plantcare;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +29,15 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.io.InputStream;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class MainActivity2 extends AppCompatActivity {
 
     private ActivityResultLauncher<Intent> cameraLauncher;
+    private ActivityResultLauncher<String> galleryLauncher; // Чтобы ушла ошибка с galleryLauncher
+    private Bitmap lastSelectedBitmap;
     private String currentMode = "detect"; // "detect" или "diagnose"
 
     @Override
@@ -60,11 +65,34 @@ public class MainActivity2 extends AppCompatActivity {
 
                         // ПРОВЕРКА: Если картинка пришла, отправляем её в AI
                         if (imageBitmap != null) {
+                            lastSelectedBitmap = imageBitmap;
                             sendImageToAI(imageBitmap);
                         }
                     }
                 }
+
         );
+        galleryLauncher = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        try {
+                            // 1. Получаем доступ к файлу по ссылке (uri)
+                            InputStream inputStream = getContentResolver().openInputStream(uri);
+                            // 2. Превращаем файл в картинку (Bitmap)
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            // 3. Сохраняем её, чтобы показать потом в окошке
+                            lastSelectedBitmap = bitmap;
+                            // 4. Отправляем в нейросеть
+                            sendImageToAI(bitmap);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(this, "Ошибка загрузки фото", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
+
 
         // Кнопка РАСПОЗНАВАНИЯ
         CardView cardDetect = findViewById(R.id.cardDetect);
@@ -103,7 +131,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
 
         // ЗАМЕНИ НА СВОЙ КЛЮЧ:
-        String apiKey = "AIzaSyCNShYWxbkQbZIEgBIYzF5sDd7hX07KvFI";
+        String apiKey = "AIzaSyBznJl6zGdvvvlILuiuFI90kgSWug08sKo";
 
         // Используем актуальную модель 2.5, она точно есть на серверах v1
         GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", apiKey);
@@ -122,7 +150,10 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onSuccess(GenerateContentResponse result) {
                 String aiResponse = result.getText();
-                runOnUiThread(() -> showResultSheet(aiResponse));
+                runOnUiThread(() -> {
+                    boolean isPlant = !aiResponse.toUpperCase().contains("ОТКАЗ");
+                    showResultSheet(aiResponse, isPlant);
+                });
             }
 
             @Override
@@ -132,7 +163,7 @@ public class MainActivity2 extends AppCompatActivity {
         }, executor);
     }
 
-    private void showResultSheet(String text) {
+    private void showResultSheet(String text, boolean isPlant) { // Добавили параметр isPlant
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View sheetView = getLayoutInflater().inflate(R.layout.layout_bottom_sheet, null);
         bottomSheetDialog.setContentView(sheetView);
@@ -141,11 +172,29 @@ public class MainActivity2 extends AppCompatActivity {
         TextView tvContent = sheetView.findViewById(R.id.tvSheetContent);
         Button btnAdd = sheetView.findViewById(R.id.btnAddToGarden);
 
+        // 1. Находим ImageView в макете нашего BottomSheet
+        ImageView ivResult = sheetView.findViewById(R.id.ivPlantResult);
+
         tvTitle.setText(currentMode.equals("detect") ? "Распознавание" : "Диагностика");
-        tvContent.setText(text);
+
+        // Убираем слово ОТКАЗ из текста, если оно там есть
+        String cleanText = text.replace("ОТКАЗ:", "").replace("ОТКАЗ", "").trim();
+        tvContent.setText(cleanText);
+
+        // 2. Устанавливаем наше сохраненное фото в ImageView
+        if (lastSelectedBitmap != null) {
+            ivResult.setImageBitmap(lastSelectedBitmap);
+        }
+
+        // 3. Управляем видимостью кнопки: если растение - показываем, если нет - прячем
+        if (isPlant) {
+            btnAdd.setVisibility(View.VISIBLE);
+        } else {
+            btnAdd.setVisibility(View.GONE);
+        }
 
         btnAdd.setOnClickListener(v -> {
-            Toast.makeText(this, "Сохранение в 'Мой сад' будет доступно в следующем обновлении!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Сохранено!", Toast.LENGTH_SHORT).show();
             bottomSheetDialog.dismiss();
         });
 
