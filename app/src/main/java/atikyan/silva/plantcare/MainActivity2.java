@@ -38,148 +38,135 @@ public class MainActivity2 extends AppCompatActivity {
 
     private ActivityResultLauncher<Intent> cameraLauncher;
     private ActivityResultLauncher<String> galleryLauncher;
-    private Bitmap lastSelectedBitmap; // Сюда сохраняем фото
+    private Bitmap lastSelectedBitmap;
     private FloatingActionButton fabCamera;
     private String currentMode = "detect";
+    private String dailyAdviceFullText = "";
+
+    private final String API_KEY = "AIzaSyDFNshs-EI95DrF5Tek6QVkcIsjnOpYXNo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-
-        // 1. Устанавливаем макет (БЕЗ ЭТОГО ПРИЛОЖЕНИЕ ВЫЛЕТАЕТ)
         setContentView(R.layout.activity_main2);
 
-        // 2. Инициализируем кнопки (Только после setContentView)
         fabCamera = findViewById(R.id.fabCamera);
         CardView cardDetect = findViewById(R.id.cardDetect);
         CardView cardDiagnose = findViewById(R.id.cardDiagnose);
+        CardView cardAdvice = findViewById(R.id.cardAdvice);
 
-        // 3. Настройка системных отступов
+        // Загружаем наш крутой совет с пользой
+        loadDailyAdvice();
+
+        cardAdvice.setOnClickListener(v -> {
+            if (!dailyAdviceFullText.isEmpty()) {
+                showResultSheet(dailyAdviceFullText, false);
+            } else {
+                Toast.makeText(this, "Идея еще подготавливается...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // 4. Проверка разрешений на камеру
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            if (checkSelfPermission(android.Manifest.permission.CAMERA) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{android.Manifest.permission.CAMERA}, 100);
+        cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                Bitmap imageBitmap = (Bitmap) result.getData().getExtras().get("data");
+                if (imageBitmap != null) {
+                    lastSelectedBitmap = imageBitmap;
+                    sendImageToAI(imageBitmap);
+                }
             }
-        }
-
-        // 5. Регистрация камеры
-        cameraLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        Bundle extras = result.getData().getExtras();
-                        Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-                        // ПРОВЕРКА: Если картинка пришла, отправляем её в AI
-                        if (imageBitmap != null) {
-                            lastSelectedBitmap = imageBitmap;
-                            sendImageToAI(imageBitmap);
-                        }
-                    }
-                }
-        );
-
-        // 6. Регистрация галереи
-        galleryLauncher = registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
-                uri -> {
-                    if (uri != null) {
-                        try {
-                            // 1. Получаем доступ к файлу по ссылке (uri)
-                            InputStream inputStream = getContentResolver().openInputStream(uri);
-                            // 2. Превращаем файл в картинку (Bitmap)
-                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                            // 3. Сохраняем её, чтобы показать потом в окошке
-                            lastSelectedBitmap = bitmap;
-                            // 4. Отправляем в нейросеть
-                            sendImageToAI(bitmap);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(this, "Ошибка загрузки фото", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-        );
-
-        // 7. Слушатели нажатий
-        fabCamera.setOnClickListener(v -> {
-            currentMode = "detect"; // Режим распознавания для главной кнопки
-            showSourceSelectionDialog(); // Метод, который открывает выбор "Камера или Галерея"
         });
 
-        cardDetect.setOnClickListener(v -> {
-            currentMode = "detect";
-            openCamera();
+        galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+            if (uri != null) {
+                try {
+                    InputStream inputStream = getContentResolver().openInputStream(uri);
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    lastSelectedBitmap = bitmap;
+                    sendImageToAI(bitmap);
+                } catch (Exception e) { e.printStackTrace(); }
+            }
         });
 
-        cardDiagnose.setOnClickListener(v -> {
-            currentMode = "diagnose";
-            openCamera();
-        });
+        fabCamera.setOnClickListener(v -> showSourceSelectionDialog());
+        cardDetect.setOnClickListener(v -> { currentMode = "detect"; openCamera(); });
+        cardDiagnose.setOnClickListener(v -> { currentMode = "diagnose"; openCamera(); });
     }
 
-    // Метод для вызова диалога выбора источника фото
+    private void loadDailyAdvice() {
+        GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", API_KEY);
+        GenerativeModelFutures model = GenerativeModelFutures.from(gm);
+
+        // Новый промпт: просим пользу и результат
+        String prompt = "Предложи одну необычную идею для домашнего мини-огорода (например, имбирь, микрозелень или авокадо). " +
+                "Формат ответа СТРОГО через символ '|': " +
+                "Название идеи | Как вырастить (2 предложения) | Какая польза и результат (1 предложение). " +
+                "Пиши только по делу, без лишних слов в конце. На русском.";
+
+        Content content = new Content.Builder().addText(prompt).build();
+        Executor executor = Executors.newSingleThreadExecutor();
+        ListenableFuture<GenerateContentResponse> response = model.generateContent(content);
+
+        Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
+            @Override
+            public void onSuccess(GenerateContentResponse result) {
+                String res = result.getText();
+                runOnUiThread(() -> {
+                    if (res != null && res.contains("|")) {
+                        String cleanRes = res.replace("*", "").replace("\"", "");
+                        String[] parts = cleanRes.split("\\|");
+
+                        TextView tvTitle = findViewById(R.id.tvAdviceTitle);
+                        if (tvTitle != null && parts.length >= 1) {
+                            tvTitle.setText(parts[0].trim());
+                        }
+
+                        // Собираем текст: Инструкция + Польза
+                        StringBuilder fullBody = new StringBuilder();
+                        if (parts.length >= 2) {
+                            fullBody.append(parts[1].trim()).append("\n\n");
+                        }
+                        if (parts.length >= 3) {
+                            fullBody.append("✨ Полезные свойства: ").append(parts[2].trim());
+                        }
+                        dailyAdviceFullText = fullBody.toString();
+                    }
+                });
+            }
+            @Override public void onFailure(Throwable t) { t.printStackTrace(); }
+        }, executor);
+    }
+
     private void showSourceSelectionDialog() {
         BottomSheetDialog sourceDialog = new BottomSheetDialog(this);
         View view = getLayoutInflater().inflate(R.layout.layout_select_source, null);
-
-        view.findViewById(R.id.btnSourceCamera).setOnClickListener(v1 -> {
-            openCamera();
-            sourceDialog.dismiss();
-        });
-
-        view.findViewById(R.id.btnSourceGallery).setOnClickListener(v1 -> {
-            galleryLauncher.launch("image/*");
-            sourceDialog.dismiss();
-        });
-
+        view.findViewById(R.id.btnSourceCamera).setOnClickListener(v -> { openCamera(); sourceDialog.dismiss(); });
+        view.findViewById(R.id.btnSourceGallery).setOnClickListener(v -> { galleryLauncher.launch("image/*"); sourceDialog.dismiss(); });
         sourceDialog.setContentView(view);
         sourceDialog.show();
     }
 
     private void openCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            cameraLauncher.launch(takePictureIntent);
-        } else {
-            Toast.makeText(this, "Камера не найдена", Toast.LENGTH_SHORT).show();
-        }
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) cameraLauncher.launch(takePictureIntent);
     }
 
     private void sendImageToAI(Bitmap bitmap) {
-        // Объявляем prompt заранее, чтобы он был доступен во всем методе
-        final String prompt;
+        String prompt = currentMode.equals("detect") ?
+                "Определи вид растения по фото. Напиши название и краткое описание. На русском." :
+                "Проверь это растение на болезни. Дай краткий совет по лечению. На русском.";
 
-        if (currentMode.equals("detect")) {
-            prompt = "Определи вид этого растения на фото. Напиши только название и краткое описание. Ответь на русском.";
-            Toast.makeText(this, "Распознаю вид...", Toast.LENGTH_SHORT).show();
-        } else {
-            prompt = "Проанализируй состояние листьев и стебля этого растения. Определи, есть ли болезни или вредители, и дай совет по лечению. Ответь на русском.";
-            Toast.makeText(this, "Диагностирую болезни...", Toast.LENGTH_SHORT).show();
-        }
-
-        // ЗАМЕНИ НА СВОЙ КЛЮЧ:
-        String apiKey = "AIzaSyBviJiGaNsZ8YUuhiZRoAMyoeKYMGVAUm0";
-
-        // Используем модель 1.5 Flash (она стабильнее)
-        // Замени эту строку:
-        GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", apiKey);
+        GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", API_KEY);
         GenerativeModelFutures model = GenerativeModelFutures.from(gm);
 
-        // Увеличим Bitmap, если он пришел слишком маленьким
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 1024, 1024, true);
-
-        Content content = new Content.Builder()
-                .addImage(scaledBitmap) // Отправляем масштабированное фото
-                .addText(prompt)
-                .build();
+        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 1024, 1024, true);
+        Content content = new Content.Builder().addImage(scaled).addText(prompt).build();
 
         Executor executor = Executors.newSingleThreadExecutor();
         ListenableFuture<GenerateContentResponse> response = model.generateContent(content);
@@ -187,55 +174,36 @@ public class MainActivity2 extends AppCompatActivity {
         Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
             @Override
             public void onSuccess(GenerateContentResponse result) {
-                String aiResponse = result.getText();
-                runOnUiThread(() -> {
-                    boolean isPlant = !aiResponse.toUpperCase().contains("ОТКАЗ");
-                    showResultSheet(aiResponse, isPlant);
-                });
+                runOnUiThread(() -> showResultSheet(result.getText(), true));
             }
-
-            @Override
-            public void onFailure(Throwable t) {
-                runOnUiThread(() -> Toast.makeText(MainActivity2.this, "Ошибка AI: " + t.getMessage(), Toast.LENGTH_LONG).show());
+            @Override public void onFailure(Throwable t) {
+                runOnUiThread(() -> Toast.makeText(MainActivity2.this, "Ошибка: " + t.getMessage(), Toast.LENGTH_LONG).show());
             }
         }, executor);
     }
 
-    private void showResultSheet(String text, boolean isPlant) { // Добавили параметр isPlant
+    private void showResultSheet(String text, boolean isPhotoResult) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View sheetView = getLayoutInflater().inflate(R.layout.layout_bottom_sheet, null);
         bottomSheetDialog.setContentView(sheetView);
 
         TextView tvTitle = sheetView.findViewById(R.id.tvSheetTitle);
         TextView tvContent = sheetView.findViewById(R.id.tvSheetContent);
+        ImageView ivResult = sheetView.findViewById(R.id.ivPlantResult);
         Button btnAdd = sheetView.findViewById(R.id.btnAddToGarden);
 
-        // 1. Находим ImageView в макете нашего BottomSheet
-        ImageView ivResult = sheetView.findViewById(R.id.ivPlantResult);
+        tvTitle.setText(isPhotoResult ? "Результат" : "Идея дня");
+        tvContent.setText(text);
 
-        tvTitle.setText(currentMode.equals("detect") ? "Распознавание" : "Диагностика");
-
-        // Убираем слово ОТКАЗ из текста, если оно там есть
-        String cleanText = text.replace("ОТКАЗ:", "").replace("ОТКАЗ", "").trim();
-        tvContent.setText(cleanText);
-
-        // 2. Устанавливаем наше сохраненное фото в ImageView
-        if (lastSelectedBitmap != null) {
+        if (isPhotoResult && lastSelectedBitmap != null) {
+            ivResult.setVisibility(View.VISIBLE);
             ivResult.setImageBitmap(lastSelectedBitmap);
-        }
-
-        // 3. Управляем видимостью кнопки: если растение - показываем, если нет - прячем
-        if (isPlant) {
             btnAdd.setVisibility(View.VISIBLE);
         } else {
+            // Для совета дня ставим иконку (если она есть) или просто скрываем
+            ivResult.setVisibility(View.GONE);
             btnAdd.setVisibility(View.GONE);
         }
-
-        btnAdd.setOnClickListener(v -> {
-            Toast.makeText(this, "Сохранено!", Toast.LENGTH_SHORT).show();
-            bottomSheetDialog.dismiss();
-        });
-
         bottomSheetDialog.show();
     }
 }

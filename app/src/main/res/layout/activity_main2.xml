@@ -186,9 +186,13 @@
                 android:fontFamily="sans-serif-medium" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardAdvice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 app:cardCornerRadius="26dp"
                 app:cardElevation="1dp"
                 app:cardBackgroundColor="#F1F5F2">
@@ -207,17 +211,19 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvAdviceTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Выращивание базилика"
+                            android:text="Загрузка совета..."
                             android:textStyle="bold"
                             android:textSize="16sp"
                             android:textColor="#1A1A1A"/>
 
                         <TextView
+                            android:id="@+id/tvAdviceSubtitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Секреты урожая на окне"
+                            android:text="Нажми, чтобы узнать больше"
                             android:textSize="13sp"
                             android:textColor="#757575"/>
 
