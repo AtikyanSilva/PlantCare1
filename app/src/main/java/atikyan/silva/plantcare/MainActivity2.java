@@ -25,6 +25,7 @@ import com.google.ai.client.generativeai.java.GenerativeModelFutures;
 import com.google.ai.client.generativeai.type.Content;
 import com.google.ai.client.generativeai.type.GenerateContentResponse;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -36,26 +37,39 @@ import java.util.concurrent.Executors;
 public class MainActivity2 extends AppCompatActivity {
 
     private ActivityResultLauncher<Intent> cameraLauncher;
-    private ActivityResultLauncher<String> galleryLauncher; // Чтобы ушла ошибка с galleryLauncher
-    private Bitmap lastSelectedBitmap;
-    private String currentMode = "detect"; // "detect" или "diagnose"
+    private ActivityResultLauncher<String> galleryLauncher;
+    private Bitmap lastSelectedBitmap; // Сюда сохраняем фото
+    private FloatingActionButton fabCamera;
+    private String currentMode = "detect";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+
+        // 1. Устанавливаем макет (БЕЗ ЭТОГО ПРИЛОЖЕНИЕ ВЫЛЕТАЕТ)
         setContentView(R.layout.activity_main2);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            if (checkSelfPermission(android.Manifest.permission.CAMERA) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{android.Manifest.permission.CAMERA}, 100);
-            }
-        }
+
+        // 2. Инициализируем кнопки (Только после setContentView)
+        fabCamera = findViewById(R.id.fabCamera);
+        CardView cardDetect = findViewById(R.id.cardDetect);
+        CardView cardDiagnose = findViewById(R.id.cardDiagnose);
+
+        // 3. Настройка системных отступов
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        // Регистрация камеры
+
+        // 4. Проверка разрешений на камеру
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.CAMERA) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.CAMERA}, 100);
+            }
+        }
+
+        // 5. Регистрация камеры
         cameraLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -70,8 +84,9 @@ public class MainActivity2 extends AppCompatActivity {
                         }
                     }
                 }
-
         );
+
+        // 6. Регистрация галереи
         galleryLauncher = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 uri -> {
@@ -93,20 +108,40 @@ public class MainActivity2 extends AppCompatActivity {
                 }
         );
 
+        // 7. Слушатели нажатий
+        fabCamera.setOnClickListener(v -> {
+            currentMode = "detect"; // Режим распознавания для главной кнопки
+            showSourceSelectionDialog(); // Метод, который открывает выбор "Камера или Галерея"
+        });
 
-        // Кнопка РАСПОЗНАВАНИЯ
-        CardView cardDetect = findViewById(R.id.cardDetect);
         cardDetect.setOnClickListener(v -> {
             currentMode = "detect";
             openCamera();
         });
 
-        // Кнопка ДИАГНОСТИКИ
-        CardView cardDiagnose = findViewById(R.id.cardDiagnose);
         cardDiagnose.setOnClickListener(v -> {
             currentMode = "diagnose";
             openCamera();
         });
+    }
+
+    // Метод для вызова диалога выбора источника фото
+    private void showSourceSelectionDialog() {
+        BottomSheetDialog sourceDialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.layout_select_source, null);
+
+        view.findViewById(R.id.btnSourceCamera).setOnClickListener(v1 -> {
+            openCamera();
+            sourceDialog.dismiss();
+        });
+
+        view.findViewById(R.id.btnSourceGallery).setOnClickListener(v1 -> {
+            galleryLauncher.launch("image/*");
+            sourceDialog.dismiss();
+        });
+
+        sourceDialog.setContentView(view);
+        sourceDialog.show();
     }
 
     private void openCamera() {
@@ -131,18 +166,21 @@ public class MainActivity2 extends AppCompatActivity {
         }
 
         // ЗАМЕНИ НА СВОЙ КЛЮЧ:
-        String apiKey = "AIzaSyBznJl6zGdvvvlILuiuFI90kgSWug08sKo";
+        String apiKey = "AIzaSyBviJiGaNsZ8YUuhiZRoAMyoeKYMGVAUm0";
 
-        // Используем актуальную модель 2.5, она точно есть на серверах v1
+        // Используем модель 1.5 Flash (она стабильнее)
+        // Замени эту строку:
         GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", apiKey);
         GenerativeModelFutures model = GenerativeModelFutures.from(gm);
-// Увеличим Bitmap, если он пришел слишком маленьким (эмуляция лучшего качества)
+
+        // Увеличим Bitmap, если он пришел слишком маленьким
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 1024, 1024, true);
 
         Content content = new Content.Builder()
                 .addImage(scaledBitmap) // Отправляем масштабированное фото
                 .addText(prompt)
                 .build();
+
         Executor executor = Executors.newSingleThreadExecutor();
         ListenableFuture<GenerateContentResponse> response = model.generateContent(content);
 
