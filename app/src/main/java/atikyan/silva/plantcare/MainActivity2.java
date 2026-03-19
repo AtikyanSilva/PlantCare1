@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +44,10 @@ public class MainActivity2 extends AppCompatActivity {
     private String currentMode = "detect";
     private String dailyAdviceFullText = "";
 
-    private final String API_KEY = "AIzaSyDFNshs-EI95DrF5Tek6QVkcIsjnOpYXNo";
+    private final String API_KEY_ADVICE = "AIzaSyCwwFVBb_A3QdUly_HjpEkS0vP2GPPyjmQ";
+    private final String API_KEY_DETECT = "AIzaSyC0HacgpSAzMU7H9SVl9jGJPU9HQPpvMyo";
+    private final String API_KEY_DIAGNOSE = "AIzaSyD9tat9LVJkJMAqUOQesJBL3xxjXUWaplg";
+    private final String API_KEY_SEARCH = "AIzaSyAOy9RTd1DQUZtvQTcQbwXv7_a85zlH2T8";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,14 +97,29 @@ public class MainActivity2 extends AppCompatActivity {
                 } catch (Exception e) { e.printStackTrace(); }
             }
         });
+        EditText searchBar = findViewById(R.id.searchBar);
 
+        searchBar.setOnEditorActionListener((v, actionId, event) -> {
+            // Добавляем проверку на ACTION_DONE и null event (для некоторых клавиатур)
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH ||
+                    actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+
+                String query = searchBar.getText().toString().trim();
+                if (!query.isEmpty()) {
+                    askAiQuestion(query); // Твой метод для ИИ-поиска
+                    searchBar.setText(""); // Очищаем строку
+                }
+                return true;
+            }
+            return false;
+        });
         fabCamera.setOnClickListener(v -> showSourceSelectionDialog());
         cardDetect.setOnClickListener(v -> { currentMode = "detect"; openCamera(); });
         cardDiagnose.setOnClickListener(v -> { currentMode = "diagnose"; openCamera(); });
     }
 
     private void loadDailyAdvice() {
-        GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", API_KEY);
+        GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", API_KEY_ADVICE); //2.5 для совета дня
         GenerativeModelFutures model = GenerativeModelFutures.from(gm);
 
         // Новый промпт: просим пользу и результат
@@ -158,11 +177,20 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     private void sendImageToAI(Bitmap bitmap) {
-        String prompt = currentMode.equals("detect") ?
-                "Определи вид растения по фото. Напиши название и краткое описание. На русском." :
-                "Проверь это растение на болезни. Дай краткий совет по лечению. На русском.";
+        String prompt;
+        String selectedApiKey;
 
-        GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", API_KEY);
+        // Оставляем твои промпты без изменений, меняем только ключи
+        if (currentMode.equals("detect")) {
+            prompt = "Определи вид растения по фото. Напиши название и краткое описание. На русском.";
+            selectedApiKey = API_KEY_DETECT; // Твой ключ для распознавания
+        } else {
+            prompt = "Проверь это растение на болезни. Дай краткий совет по лечению. На русском.";
+            selectedApiKey = API_KEY_DIAGNOSE; // Твой ключ для диагностики
+        }
+
+        // Используем выбранный ключ и модель 1.5-flash для стабильности
+        GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", selectedApiKey);
         GenerativeModelFutures model = GenerativeModelFutures.from(gm);
 
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 1024, 1024, true);
@@ -184,26 +212,78 @@ public class MainActivity2 extends AppCompatActivity {
 
     private void showResultSheet(String text, boolean isPhotoResult) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View sheetView = getLayoutInflater().inflate(R.layout.layout_bottom_sheet, null);
+
+        // 1. ВЫБИРАЕМ МАКЕТ: если фото нет, загружаем твой новый лаконичный XML
+        int layoutId = isPhotoResult ? R.layout.layout_bottom_sheet : R.layout.layout_bottom_sheet_text;
+        View sheetView = getLayoutInflater().inflate(layoutId, null);
+
         bottomSheetDialog.setContentView(sheetView);
 
+        // Эти элементы есть в ОБОИХ макетах
         TextView tvTitle = sheetView.findViewById(R.id.tvSheetTitle);
         TextView tvContent = sheetView.findViewById(R.id.tvSheetContent);
-        ImageView ivResult = sheetView.findViewById(R.id.ivPlantResult);
-        Button btnAdd = sheetView.findViewById(R.id.btnAddToGarden);
 
-        tvTitle.setText(isPhotoResult ? "Результат" : "Идея дня");
+        if (isPhotoResult) {
+            // --- ЛОГИКА ДЛЯ ОКНА С ФОТО ---
+            tvTitle.setText(currentMode.equals("detect") ? "Распознавание" : "Диагностика");
+
+            // Эти элементы есть ТОЛЬКО в layout_bottom_sheet
+            ImageView ivResult = sheetView.findViewById(R.id.ivPlantResult);
+            Button btnAdd = sheetView.findViewById(R.id.btnAddToGarden);
+
+            if (ivResult != null && lastSelectedBitmap != null) {
+                ivResult.setImageBitmap(lastSelectedBitmap);
+            }
+
+            if (btnAdd != null) {
+                btnAdd.setOnClickListener(v -> {
+                    Toast.makeText(this, "Сохранено в Мой сад! 🌱", Toast.LENGTH_SHORT).show();
+                    bottomSheetDialog.dismiss();
+                });
+            }
+        } else {
+            // --- ЛОГИКА ДЛЯ ТЕКСТОВОГО ОКНА (Твой новый XML) ---
+            // Проверяем: это совет дня или ответ из поиска?
+            if (text.equals(dailyAdviceFullText)) {
+                tvTitle.setText("Идея дня");
+            } else {
+                tvTitle.setText("Ответ ботаника");
+            }
+        }
+
+        // Устанавливаем текст ответа (в обоих случаях)
         tvContent.setText(text);
 
-        if (isPhotoResult && lastSelectedBitmap != null) {
-            ivResult.setVisibility(View.VISIBLE);
-            ivResult.setImageBitmap(lastSelectedBitmap);
-            btnAdd.setVisibility(View.VISIBLE);
-        } else {
-            // Для совета дня ставим иконку (если она есть) или просто скрываем
-            ivResult.setVisibility(View.GONE);
-            btnAdd.setVisibility(View.GONE);
-        }
         bottomSheetDialog.show();
+    }
+    private void askAiQuestion(String userText) {
+        Toast.makeText(this, "Бот-ботаник ищет ответ...", Toast.LENGTH_SHORT).show();
+
+        // Используем отдельный ключ для поиска
+        GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", API_KEY_SEARCH);
+        GenerativeModelFutures model = GenerativeModelFutures.from(gm);
+
+        // Промпт для поиска (можно не менять, он универсальный)
+        String prompt = "Ты эксперт по растениям. Ответь на вопрос: " + userText +
+                ". Отвечай кратко, понятно и на русском языке.";
+
+        Content content = new Content.Builder().addText(prompt).build();
+        Executor executor = Executors.newSingleThreadExecutor();
+        ListenableFuture<GenerateContentResponse> response = model.generateContent(content);
+
+        Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
+            @Override
+            public void onSuccess(GenerateContentResponse result) {
+                runOnUiThread(() -> {
+                    // Показываем ответ в том же Sheet, но без фото (isPhotoResult = false)
+                    showResultSheet(result.getText(), false);
+                });
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                runOnUiThread(() -> Toast.makeText(MainActivity2.this, "Ошибка поиска: " + t.getMessage(), Toast.LENGTH_SHORT).show());
+            }
+        }, executor);
     }
 }
