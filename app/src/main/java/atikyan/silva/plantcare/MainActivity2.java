@@ -1,6 +1,9 @@
 package atikyan.silva.plantcare;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,6 +20,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -44,10 +49,33 @@ public class MainActivity2 extends AppCompatActivity {
     private String currentMode = "detect";
     private String dailyAdviceFullText = "";
 
-    private final String API_KEY_ADVICE = "AIzaSyCwwFVBb_A3QdUly_HjpEkS0vP2GPPyjmQ";
-    private final String API_KEY_DETECT = "AIzaSyC0HacgpSAzMU7H9SVl9jGJPU9HQPpvMyo";
-    private final String API_KEY_DIAGNOSE = "AIzaSyD9tat9LVJkJMAqUOQesJBL3xxjXUWaplg";
-    private final String API_KEY_SEARCH = "AIzaSyAOy9RTd1DQUZtvQTcQbwXv7_a85zlH2T8";
+    private final String API_KEY_ADVICE = "AIzaSyByyHps3noOZ4deOeftSWRLrsclJ1E0aZY";
+    private final String API_KEY_DETECT = "AIzaSyCUriqLyYW-F1mQsRMCRT5bVije4-Q0ui0";
+    private final String API_KEY_DIAGNOSE = "AIzaSyALZVUn8bNbNBC1d4vDOZjwdzm4fgx9ZLY";
+    private final String API_KEY_SEARCH = "AIzaSyAj88PTL-H6QHc4b4r5VbwnTp8sPog3XVM";
+    private static final int CAMERA_PERMISSION_CODE = 101;
+    private ProgressDialog progressDialog;
+    private void showLoading(String message) {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(message);
+        progressDialog.setCancelable(false); // Чтобы пользователь случайно не закрыл окно
+        progressDialog.show();
+    }
+
+    private void hideLoading() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+    private void checkPermissionAndProceed() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            showSourceSelectionDialog();
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,9 +141,17 @@ public class MainActivity2 extends AppCompatActivity {
             }
             return false;
         });
-        fabCamera.setOnClickListener(v -> showSourceSelectionDialog());
-        cardDetect.setOnClickListener(v -> { currentMode = "detect"; openCamera(); });
-        cardDiagnose.setOnClickListener(v -> { currentMode = "diagnose"; openCamera(); });
+        fabCamera.setOnClickListener(v -> checkPermissionAndProceed());
+
+        cardDetect.setOnClickListener(v -> {
+            currentMode = "detect";
+            checkPermissionAndProceed();
+        });
+
+        cardDiagnose.setOnClickListener(v -> {
+            currentMode = "diagnose";
+            checkPermissionAndProceed();
+        });
     }
 
     private void loadDailyAdvice() {
@@ -182,13 +218,16 @@ public class MainActivity2 extends AppCompatActivity {
 
         // Оставляем твои промпты без изменений, меняем только ключи
         if (currentMode.equals("detect")) {
-            prompt = "Определи вид растения по фото. Напиши название и краткое описание. На русском.";
-            selectedApiKey = API_KEY_DETECT; // Твой ключ для распознавания
+            prompt = "Инструкция: Если на фото растение, начни ответ со слова РАСТЕНИЕ. Если на фото НЕ растение, со фразы Not plant. " +
+                    "Далее: если растение, напиши название и краткое описание. На русском языке.";
+            selectedApiKey = API_KEY_DETECT;
         } else {
-            prompt = "Проверь это растение на болезни. Дай краткий совет по лечению. На русском.";
-            selectedApiKey = API_KEY_DIAGNOSE; // Твой ключ для диагностики
-        }
+            prompt = "Инструкция: Если на фото растение, начни ответ со слова РАСТЕНИЕ. Если на фото НЕ растение, начни со фразы Not plant. " +
+                    "Далее: если растение, проведи диагностику болезней и дай советы по лечению. На русском языке.";
+            selectedApiKey = API_KEY_DIAGNOSE;
 
+        }
+        showLoading("Анализирую фото... 🌱");
         // Используем выбранный ключ и модель 1.5-flash для стабильности
         GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", selectedApiKey);
         GenerativeModelFutures model = GenerativeModelFutures.from(gm);
@@ -202,32 +241,63 @@ public class MainActivity2 extends AppCompatActivity {
         Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
             @Override
             public void onSuccess(GenerateContentResponse result) {
-                runOnUiThread(() -> showResultSheet(result.getText(), true));
+                runOnUiThread(() -> {
+                    // 2. Скрываем загрузку, когда пришел ответ
+                    hideLoading();
+                    showResultSheet(result.getText(), true);
+                });
             }
-            @Override public void onFailure(Throwable t) {
-                runOnUiThread(() -> Toast.makeText(MainActivity2.this, "Ошибка: " + t.getMessage(), Toast.LENGTH_LONG).show());
+
+            @Override
+            public void onFailure(Throwable t) {
+                runOnUiThread(() -> {
+                    // 3. Скрываем загрузку, если что-то пошло не так
+                    hideLoading();
+                    Toast.makeText(MainActivity2.this, "Ошибка: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                });
             }
         }, executor);
     }
 
+    @SuppressLint("MissingInflatedId")
     private void showResultSheet(String text, boolean isPhotoResult) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
 
-        // 1. ВЫБИРАЕМ МАКЕТ: если фото нет, загружаем твой новый лаконичный XML
-        int layoutId = isPhotoResult ? R.layout.layout_bottom_sheet : R.layout.layout_bottom_sheet_text;
-        View sheetView = getLayoutInflater().inflate(layoutId, null);
+        // 1. ПРОВЕРКА
+        String upperText = (text != null) ? text.toUpperCase().trim() : "";
+        // Проверяем на "РАСТЕНИЕ", а всё остальное (включая "NOT PLANT") считаем не растением
+        boolean isPlant = upperText.startsWith("РАСТЕНИЕ");
 
+        // 2. ОЧИСТКА ТЕКСТА
+        // Добавляем (?i)Not plant для удаления английской метки
+        String cleanText = (text != null) ?
+                text.replaceFirst("(?i)РАСТЕНИЕ", "")
+                        .replaceFirst("(?i)Not plant", "На фото нету растение")
+                        .trim() : "";
+
+        // Очистка от мусора в начале (точки, двоеточия, тире)
+        // Цикл while поможет, если там вдруг и точка, и пробел одновременно
+        while (cleanText.startsWith(".") || cleanText.startsWith(":") || cleanText.startsWith("-") || cleanText.startsWith(" ")) {
+            cleanText = cleanText.substring(1).trim();
+        }
+
+        // 3. ВЫБИРАЕМ МАКЕТ
+        int layoutId;
+        if (isPhotoResult) {
+            layoutId = isPlant ? R.layout.layout_bottom_sheet : R.layout.layout_bottom_sheet_no_btn;
+        } else {
+            layoutId = R.layout.layout_bottom_sheet_text;
+        }
+
+        View sheetView = getLayoutInflater().inflate(layoutId, null);
         bottomSheetDialog.setContentView(sheetView);
 
-        // Эти элементы есть в ОБОИХ макетах
         TextView tvTitle = sheetView.findViewById(R.id.tvSheetTitle);
         TextView tvContent = sheetView.findViewById(R.id.tvSheetContent);
 
         if (isPhotoResult) {
-            // --- ЛОГИКА ДЛЯ ОКНА С ФОТО ---
             tvTitle.setText(currentMode.equals("detect") ? "Распознавание" : "Диагностика");
 
-            // Эти элементы есть ТОЛЬКО в layout_bottom_sheet
             ImageView ivResult = sheetView.findViewById(R.id.ivPlantResult);
             Button btnAdd = sheetView.findViewById(R.id.btnAddToGarden);
 
@@ -242,18 +312,14 @@ public class MainActivity2 extends AppCompatActivity {
                 });
             }
         } else {
-            // --- ЛОГИКА ДЛЯ ТЕКСТОВОГО ОКНА (Твой новый XML) ---
-            // Проверяем: это совет дня или ответ из поиска?
-            if (text.equals(dailyAdviceFullText)) {
+            if (text != null && text.equals(dailyAdviceFullText)) {
                 tvTitle.setText("Идея дня");
             } else {
                 tvTitle.setText("Ответ ботаника");
             }
         }
 
-        // Устанавливаем текст ответа (в обоих случаях)
-        tvContent.setText(text);
-
+        tvContent.setText(cleanText);
         bottomSheetDialog.show();
     }
     private void askAiQuestion(String userText) {
