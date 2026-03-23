@@ -265,30 +265,31 @@
         android:backgroundTint="#FFFFFF"
         app:fabAlignmentMode="center"
         app:fabCradleMargin="10dp"
-        app:fabCradleRoundedCornerRadius="40dp"
-        app:fabCradleVerticalOffset="12dp"
-        app:elevation="16dp">
+        app:fabCradleRoundedCornerRadius="30dp"
+        app:elevation="8dp" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNav"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            app:labelVisibilityMode="labeled"
-            app:itemIconTint="#8C9E93"
-            app:itemTextColor="#8C9E93"
-            app:menu="@menu/bottom_menu" />
-
-    </com.google.android.material.bottomappbar.BottomAppBar>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_gravity="bottom"
+        android:background="@android:color/transparent"
+        app:elevation="0dp"
+        app:labelVisibilityMode="labeled"
+        app:itemIconSize="24dp"
+        app:itemIconTint="@color/nav_selector"
+        app:itemTextColor="@color/nav_selector"
+        app:itemActiveIndicatorStyle="@null"
+        app:menu="@menu/bottom_menu" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_camera"
-        app:backgroundTint="#4F7960"
+        app:backgroundTint="#1D5C3D"
         app:fabCustomSize="68dp"
-        app:maxImageSize="32dp"
+        app:maxImageSize="30dp"
         app:tint="@android:color/white"
         app:layout_anchor="@id/bottomAppBar"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.App.Circle" />

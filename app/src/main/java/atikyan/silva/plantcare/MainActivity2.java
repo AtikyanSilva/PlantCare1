@@ -30,6 +30,7 @@ import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.GenerativeModelFutures;
 import com.google.ai.client.generativeai.type.Content;
 import com.google.ai.client.generativeai.type.GenerateContentResponse;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.util.concurrent.FutureCallback;
@@ -49,10 +50,10 @@ public class MainActivity2 extends AppCompatActivity {
     private String currentMode = "detect";
     private String dailyAdviceFullText = "";
 
-    private final String API_KEY_ADVICE = "AIzaSyByyHps3noOZ4deOeftSWRLrsclJ1E0aZY";
-    private final String API_KEY_DETECT = "AIzaSyCUriqLyYW-F1mQsRMCRT5bVije4-Q0ui0";
-    private final String API_KEY_DIAGNOSE = "AIzaSyALZVUn8bNbNBC1d4vDOZjwdzm4fgx9ZLY";
-    private final String API_KEY_SEARCH = "AIzaSyAj88PTL-H6QHc4b4r5VbwnTp8sPog3XVM";
+    private final String API_KEY_ADVICE = "AIzaSyDaJZERUbMB0KSiOIZPvd-dEWMVhHDhYPg";
+    private final String API_KEY_DETECT = "AIzaSyBq3WhPlOrhnSfNdvL7__YD-6kSCT-RLRQ";
+    private final String API_KEY_DIAGNOSE = "AIzaSyBsm2IPwXS2c0LqXki7fV4UTKdsJz6lUzA";
+    private final String API_KEY_SEARCH = "AIzaSyAl9AFN8QXBtv583RIvVo-0qtcXecTq1xw";
     private static final int CAMERA_PERMISSION_CODE = 101;
     private ProgressDialog progressDialog;
     private void showLoading(String message) {
@@ -82,7 +83,40 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main2);
+        // Находим нашу нижнюю панель
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        bottomNav.setBackground(null); // Это сделает фон прозрачным для BottomAppBar
 
+        // 2. Делаем "Главную" активной
+        bottomNav.setSelectedItemId(R.id.nav_home);
+
+        // 3. ВОТ ТВОЯ ПРОВЕРКА (ВСТАВЛЯЙ СЮДА):
+        if (bottomNav.getMenu().findItem(R.id.placeholder) != null) {
+            bottomNav.getMenu().findItem(R.id.placeholder).setEnabled(false);
+        }
+// 1. Делаем "Главную" активной при запуске приложения
+        bottomNav.setSelectedItemId(R.id.nav_home);
+
+// 2. Отключаем кликабельность центрального пустого места (под FAB)
+// Это нужно, чтобы при нажатии рядом с камерой ничего не происходило
+        bottomNav.getMenu().findItem(R.id.placeholder).setEnabled(false);
+
+// 3. Обработка нажатий на иконки (для смены экранов в будущем)
+        bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_home) {
+                // Здесь будет код для открытия главного экрана
+                return true;
+            } else if (id == R.id.nav_instruments) {
+                // Здесь будет код для экрана инструментов (твои листики)
+                return true;
+            } else if (id == R.id.nav_interactive) {
+                return true;
+            } else if (id == R.id.nav_garden) {
+                return true;
+            }
+            return false;
+        });
         fabCamera = findViewById(R.id.fabCamera);
         CardView cardDetect = findViewById(R.id.cardDetect);
         CardView cardDiagnose = findViewById(R.id.cardDiagnose);
@@ -101,7 +135,9 @@ public class MainActivity2 extends AppCompatActivity {
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            // Оставляем отступы только сверху (для статус-бара) и по бокам.
+            // Снизу ставим 0, чтобы панель прилегала к краю экрана.
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
 
