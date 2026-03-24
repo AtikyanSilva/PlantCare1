@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.GenerativeModelFutures;
@@ -41,6 +42,11 @@ import java.io.InputStream;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity2 extends AppCompatActivity {
 
     private ActivityResultLauncher<Intent> cameraLauncher;
@@ -49,6 +55,9 @@ public class MainActivity2 extends AppCompatActivity {
     private FloatingActionButton fabCamera;
     private String currentMode = "detect";
     private String dailyAdviceFullText = "";
+    private RecyclerView rvCommonProblems;
+    private ProblemAdapter problemsAdapter;
+    private List<Problem> problemList;
 
     private final String API_KEY_ADVICE = "AIzaSyDaJZERUbMB0KSiOIZPvd-dEWMVhHDhYPg";
     private final String API_KEY_DETECT = "AIzaSyBq3WhPlOrhnSfNdvL7__YD-6kSCT-RLRQ";
@@ -83,38 +92,51 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main2);
-        // Находим нашу нижнюю панель
-        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setBackground(null); // Это сделает фон прозрачным для BottomAppBar
 
-        // 2. Делаем "Главную" активной
+        // 1. Инициализация списка проблем
+        RecyclerView rvCommonProblems = findViewById(R.id.rvCommonProblems);
+        List<Problem> problemList = new ArrayList<>();
+
+        // Добавляй карточки здесь (каждая карточка — это новая строка .add)
+        problemList.add(new Problem(
+                "Рост ножек",
+                "Растяжение стеблей из-за недостатка освещения.",
+                "Обеспечьте свет, расположив растения у окна или используя лампы.",
+                R.drawable.advice // Проверь, что эта картинка есть в drawable
+        ));
+
+        // Добавим вторую для теста, чтобы увидеть горизонтальный скролл
+        problemList.add(new Problem(
+                "Хлороз",
+                "Листья желтеют из-за нехватки железа.",
+                "Используйте удобрения с железом.",
+                R.drawable.advice
+        ));
+
+        rvCommonProblems.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        // Отключаем вложенный скролл, чтобы NestedScrollView работал правильно
+        rvCommonProblems.setNestedScrollingEnabled(false);
+
+        ProblemAdapter adapter = new ProblemAdapter(problemList);
+        rvCommonProblems.setAdapter(adapter);
+
+        // 2. Настройка навигации (без дубликатов)
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        bottomNav.setBackground(null);
         bottomNav.setSelectedItemId(R.id.nav_home);
 
-        // 3. ВОТ ТВОЯ ПРОВЕРКА (ВСТАВЛЯЙ СЮДА):
+        // Отключаем центральную кнопку-заглушку один раз
         if (bottomNav.getMenu().findItem(R.id.placeholder) != null) {
             bottomNav.getMenu().findItem(R.id.placeholder).setEnabled(false);
         }
-// 1. Делаем "Главную" активной при запуске приложения
-        bottomNav.setSelectedItemId(R.id.nav_home);
 
-// 2. Отключаем кликабельность центрального пустого места (под FAB)
-// Это нужно, чтобы при нажатии рядом с камерой ничего не происходило
-        bottomNav.getMenu().findItem(R.id.placeholder).setEnabled(false);
-
-// 3. Обработка нажатий на иконки (для смены экранов в будущем)
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.nav_home) {
-                // Здесь будет код для открытия главного экрана
-                return true;
-            } else if (id == R.id.nav_instruments) {
-                // Здесь будет код для экрана инструментов (твои листики)
-                return true;
-            } else if (id == R.id.nav_interactive) {
-                return true;
-            } else if (id == R.id.nav_garden) {
-                return true;
-            }
+            if (id == R.id.nav_home) return true;
+            if (id == R.id.nav_instruments) return true;
+            if (id == R.id.nav_interactive) return true;
+            if (id == R.id.nav_garden) return true;
             return false;
         });
         fabCamera = findViewById(R.id.fabCamera);
