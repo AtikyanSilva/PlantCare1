@@ -12,11 +12,15 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
     private Button btnLogin, btnSignUp, btnGuest, btnNext;
     private ImageView ivTogglePassword;
+    private FirebaseAuth mAuth; // Добавь эту строку под ImageView
 
     private boolean isPasswordVisible = false;
 
@@ -25,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
         btnNext = findViewById(R.id.btnNextActivity); // ID должен совпадать с тем, что в XML
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
@@ -32,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.btnSignUp);
         btnGuest = findViewById(R.id.btnGuest);
         ivTogglePassword = findViewById(R.id.ivTogglePassword);
+        // Если пользователь уже авторизован (и почта подтверждена или он гость) — сразу пускаем дальше
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            if (currentUser.isAnonymous() || currentUser.isEmailVerified()) {
+                goToNextActivity();
+            }
+        }
 
         setupPasswordToggle();
         setupButtons();
@@ -58,37 +70,70 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
-
+        // ЛОГИКА ВХОДА
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString();
 
-            if (!isValidEmail(email)) {
-                etEmail.setError("Enter a valid email");
-                etEmail.requestFocus();
-                return;
+            if (validateInputs(email, password)) {
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, task -> {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                // Проверяем, подтверждена ли почта ссылкой
+                                if (user != null && user.isEmailVerified()) {
+                                    goToNextActivity();
+                                } else {
+                                    Toast.makeText(this, "Пожалуйста, подтвердите Email в письме!", Toast.LENGTH_LONG).show();
+                                    mAuth.signOut();
+                                }
+                            } else {
+                                Toast.makeText(this, "Ошибка входа: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
-
-            if (!isValidPassword(password)) {
-                etPassword.setError("Password must be 8+ chars, letters & digits");
-                etPassword.requestFocus();
-                return;
-            }
-            Toast.makeText(this, "Validation passed ✅", Toast.LENGTH_SHORT).show();
         });
 
-        btnSignUp.setOnClickListener(v ->
-                Toast.makeText(this, "Sign Up clicked", Toast.LENGTH_SHORT).show()
-        );
+        // ЛОГИКА РЕГИСТРАЦИИ
+        btnSignUp.setOnClickListener(v -> {
+            String email = etEmail.getText().toString().trim();
+            String password = etPassword.getText().toString();
 
-        btnGuest.setOnClickListener(v ->
-                Toast.makeText(this, "Guest mode", Toast.LENGTH_SHORT).show()
-        );
-        btnNext.setOnClickListener(v -> {
-            // Создаем "намерение" перейти во вторую активити
-            Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-            startActivity(intent);
+            if (validateInputs(email, password)) {
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, task -> {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                if (user != null) {
+                                    // Отправляем ту самую ссылку на Мейл
+                                    user.sendEmailVerification().addOnCompleteListener(verifyTask -> {
+                                        if (verifyTask.isSuccessful()) {
+                                            Toast.makeText(this, "Регистрация успешна! Проверьте почту для подтверждения.", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+                            } else {
+                                Toast.makeText(this, "Ошибка регистрации: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
         });
+
+        // ЛОГИКА ГОСТЯ (Анонимный вход)
+        btnGuest.setOnClickListener(v -> {
+            mAuth.signInAnonymously()
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(this, "Вход выполнен как гость", Toast.LENGTH_SHORT).show();
+                            goToNextActivity();
+                        } else {
+                            Toast.makeText(this, "Ошибка гостевого входа", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        });
+
+        // Кнопка принудительного перехода (если нужно для тестов)
+        btnNext.setOnClickListener(v -> goToNextActivity());
     }
 
     private boolean isValidEmail(String email) {
@@ -107,5 +152,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return hasLetter && hasDigit;
+    }
+    // Метод для перехода на следующий экран и закрытия текущего
+    private void goToNextActivity() {
+        Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+        startActivity(intent);
+        finish();
+    }
+
+    // Объединенная валидация, чтобы не писать if-else по сто раз
+    private boolean validateInputs(String email, String password) {
+        if (!isValidEmail(email)) {
+            etEmail.setError("Enter a valid email");
+            etEmail.requestFocus();
+            return false;
+        }
+        if (!isValidPassword(password)) {
+            etPassword.setError("Password must be 8+ chars, letters & digits");
+            etPassword.requestFocus();
+            return false;
+        }
+        return true;
     }
 }

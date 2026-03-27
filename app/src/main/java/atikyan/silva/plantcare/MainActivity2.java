@@ -37,6 +37,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.InputStream;
 import java.util.concurrent.Executor;
@@ -59,10 +60,10 @@ public class MainActivity2 extends AppCompatActivity {
     private ProblemAdapter problemsAdapter;
     private List<Problem> problemList;
 
-    private final String API_KEY_ADVICE = "";
-    private final String API_KEY_DETECT = "";
-    private final String API_KEY_DIAGNOSE = "";
-    private final String API_KEY_SEARCH = "";
+    private final String API_KEY_ADVICE = "AIzaSyDDxeg-Li3a_Quu5_mo2qHIJWuH3z5v0O0";
+    private final String API_KEY_DETECT = "AIzaSyALhf9D9edQaaq73vJgI1LLuYWVgQ9FvHQ";
+    private final String API_KEY_DIAGNOSE = "AIzaSyCQHKNY5hU-La6UboOHSp0mf_si1OdKSJE";
+    private final String API_KEY_SEARCH = "AIzaSyDk9erjPmsf9iBcynB2WTrgSScRmV060xQ";
     private static final int CAMERA_PERMISSION_CODE = 101;
     private ProgressDialog progressDialog;
     private void showLoading(String message) {
@@ -92,6 +93,18 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main2);
+        Button btnLogout = findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(v -> {
+            // 1. Разлогиниваемся в Firebase
+            FirebaseAuth.getInstance().signOut();
+
+            // 2. Возвращаемся на первый экран (MainActivity)
+            Intent intent = new Intent(MainActivity2.this, MainActivity.class);
+            startActivity(intent);
+
+            // 3. Закрываем текущий экран
+            finish();
+        });
 
         // 1. Инициализация списка проблем
         RecyclerView rvCommonProblems = findViewById(R.id.rvCommonProblems);

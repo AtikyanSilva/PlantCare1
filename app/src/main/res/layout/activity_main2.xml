@@ -177,6 +177,11 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Выйти из аккаунта" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -185,7 +190,6 @@
                 android:textColor="#122A16"
                 android:textSize="22sp"
                 android:fontFamily="sans-serif-medium" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCommonProblems"
                 android:layout_width="match_parent"
