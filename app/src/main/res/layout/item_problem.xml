@@ -29,6 +29,8 @@
             android:textColor="#122A16"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:gravity="center" />
+            android:gravity="center"
+            android:maxLines="1"
+            android:ellipsize="end"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
