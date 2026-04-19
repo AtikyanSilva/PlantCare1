@@ -2,9 +2,11 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FDFDFB">
+    android:background="#FDFDFB"
+    >
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -203,6 +205,7 @@
                     android:text="Скорее всего, вы заливаете растение. Проверьте почву."
                     android:textColor="#555555"
                     android:textSize="13sp" />
+
             </LinearLayout>
             </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -250,5 +253,48 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        app:fabCradleVerticalOffset="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="#FFFFFF"
+        app:fabAlignmentMode="center"
+        app:fabCradleMargin="8dp"
+        app:fabCradleRoundedCornerRadius="15dp"
+        app:elevation="8dp"
+        android:layout_marginBottom="0dp"
+        app:paddingBottomSystemWindowInsets="false"
+        app:paddingLeftSystemWindowInsets="false"
+        app:paddingRightSystemWindowInsets="false">
 
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            app:elevation="0dp"
+            app:labelVisibilityMode="labeled"
+            app:itemIconSize="26dp"
+            app:itemPaddingTop="10dp"
+            app:itemPaddingBottom="12dp"
+            android:textSize="14sp"
+            app:itemIconTint="@color/nav_selector"
+            app:itemTextColor="@color/nav_selector"
+            app:menu="@menu/bottom_menu"
+            android:paddingBottom="0dp"
+            />
+    </com.google.android.material.bottomappbar.BottomAppBar>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_camera"
+        android:contentDescription="Camera"
+        app:backgroundTint="#1D5C3D"
+        app:tint="@android:color/white"
+        app:layout_anchor="@id/bottomAppBar"
+        app:elevation="12dp" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

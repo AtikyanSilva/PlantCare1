@@ -62,6 +62,11 @@ public class MainActivity2 extends AppCompatActivity {
     private ProblemAdapter problemsAdapter;
     private List<Problem> problemList;
     private final Executor executor = Executors.newSingleThreadExecutor();
+
+    private final String API_KEY_ADVICE = "AQ.Ab8RN6K93IzdKsD41rsFWITTGo3XbyXqkDqqYlmk5EKaxEJl6A";
+    private final String API_KEY_DETECT = "AQ.Ab8RN6I4WdSrKsmDuMTWWZTDcbekpVaaW29zTnKnIBYVGtedtQ";
+    private final String API_KEY_DIAGNOSE = "AQ.Ab8RN6J903Cy8hDGdmcNctn_qDYl7RujSisB_MX74mjpbeOrVg";
+    private final String API_KEY_SEARCH = "AQ.Ab8RN6LmajjcMRHt6XE3xVHshOVjqSVF6FL51BhwSxDyfVuHSg";
     private static final int CAMERA_PERMISSION_CODE = 101;
     private ProgressDialog progressDialog;
     private void showLoading(String message) {
@@ -250,7 +255,6 @@ public class MainActivity2 extends AppCompatActivity {
 // 1. Инициализация (ID должны совпадать с XML)
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         FloatingActionButton fabCamera = findViewById(R.id.fabCamera); // Инициализируем камеру
-
 // 2. Выбираем активный пункт (Home)
         bottomNav.setSelectedItemId(R.id.nav_home);
 
@@ -263,7 +267,11 @@ public class MainActivity2 extends AppCompatActivity {
                 // например: openFragment(new HomeFragment());
                 return true;
             }
-            if (id == R.id.nav_instruments) return true;
+            if (id == R.id.nav_instruments) {
+                Intent intent = new Intent(MainActivity2.this, MainActivity3.class); // Проверь MainActivity2.this
+                startActivity(intent);
+                return true;
+            }
             if (id == R.id.nav_interactive) return true;
             if (id == R.id.nav_garden) return true;
 
@@ -346,6 +354,7 @@ public class MainActivity2 extends AppCompatActivity {
             currentMode = "diagnose";
             checkPermissionAndProceed();
         });
+
     }
 
     private void loadDailyAdvice() {
