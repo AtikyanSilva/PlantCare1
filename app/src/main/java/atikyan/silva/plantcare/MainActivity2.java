@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.GenerativeModelFutures;
 import com.google.ai.client.generativeai.type.Content;
 import com.google.ai.client.generativeai.type.GenerateContentResponse;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -59,11 +61,7 @@ public class MainActivity2 extends AppCompatActivity {
     private RecyclerView rvCommonProblems;
     private ProblemAdapter problemsAdapter;
     private List<Problem> problemList;
-
-    private final String API_KEY_ADVICE = "AIzaSyDDxeg-Li3a_Quu5_mo2qHIJWuH3z5v0O0";
-    private final String API_KEY_DETECT = "AIzaSyALhf9D9edQaaq73vJgI1LLuYWVgQ9FvHQ";
-    private final String API_KEY_DIAGNOSE = "AIzaSyCQHKNY5hU-La6UboOHSp0mf_si1OdKSJE";
-    private final String API_KEY_SEARCH = "AIzaSyDk9erjPmsf9iBcynB2WTrgSScRmV060xQ";
+    private final Executor executor = Executors.newSingleThreadExecutor();
     private static final int CAMERA_PERMISSION_CODE = 101;
     private ProgressDialog progressDialog;
     private void showLoading(String message) {
@@ -233,30 +231,55 @@ public class MainActivity2 extends AppCompatActivity {
 
         ProblemAdapter adapter = new ProblemAdapter(problemList);
         rvCommonProblems.setAdapter(adapter);
+        // 1. Находим корневой макет и отключаем нижний отступ
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            // Снизу ставим строго 0
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            return insets;
+        });
 
-        // 2. Настройка навигации (без дубликатов)
+// 2. Находим саму панель и ЗАПРЕЩАЕМ ей добавлять отступы
+        BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
+        bottomAppBar.setPadding(0, 0, 0, 0); // Обнуляем программно на всякий случай
+
+// 3. Важный трюк: поглощаем инсеты именно для навигации
+        ViewCompat.setOnApplyWindowInsetsListener(bottomAppBar, (v, insets) -> {
+            return WindowInsetsCompat.CONSUMED;
+        });
+// 1. Инициализация (ID должны совпадать с XML)
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setBackground(null);
+        FloatingActionButton fabCamera = findViewById(R.id.fabCamera); // Инициализируем камеру
+
+// 2. Выбираем активный пункт (Home)
         bottomNav.setSelectedItemId(R.id.nav_home);
 
-        // Отключаем центральную кнопку-заглушку один раз
-        if (bottomNav.getMenu().findItem(R.id.placeholder) != null) {
-            bottomNav.getMenu().findItem(R.id.placeholder).setEnabled(false);
-        }
-
+// 3. Обработка нажатий
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.nav_home) return true;
+
+            // Здесь будет твоя логика перехода между фрагментами или активити
+            if (id == R.id.nav_home) {
+                // например: openFragment(new HomeFragment());
+                return true;
+            }
             if (id == R.id.nav_instruments) return true;
             if (id == R.id.nav_interactive) return true;
             if (id == R.id.nav_garden) return true;
+
             return false;
         });
-        fabCamera = findViewById(R.id.fabCamera);
+
+// 4. Логика для кнопки камеры
+        fabCamera.setOnClickListener(v -> {
+            // Твой код для открытия камеры
+            Toast.makeText(this, "Открываем камеру...", Toast.LENGTH_SHORT).show();
+        });
+
+// Инициализация карточек (оставляем как было)
         CardView cardDetect = findViewById(R.id.cardDetect);
         CardView cardDiagnose = findViewById(R.id.cardDiagnose);
         CardView cardAdvice = findViewById(R.id.cardAdvice);
-
         // Загружаем наш крутой совет с пользой
         loadDailyAdvice();
 
@@ -281,7 +304,7 @@ public class MainActivity2 extends AppCompatActivity {
                 Bitmap imageBitmap = (Bitmap) result.getData().getExtras().get("data");
                 if (imageBitmap != null) {
                     lastSelectedBitmap = imageBitmap;
-                    sendImageToAI(imageBitmap);
+                    sendImageToAI(imageBitmap, 0);
                 }
             }
         });
@@ -292,7 +315,7 @@ public class MainActivity2 extends AppCompatActivity {
                     InputStream inputStream = getContentResolver().openInputStream(uri);
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                     lastSelectedBitmap = bitmap;
-                    sendImageToAI(bitmap);
+                    sendImageToAI(bitmap, 0);
                 } catch (Exception e) { e.printStackTrace(); }
             }
         });
@@ -365,8 +388,18 @@ public class MainActivity2 extends AppCompatActivity {
                     }
                 });
             }
-            @Override public void onFailure(Throwable t) { t.printStackTrace(); }
-        }, executor);
+            @Override
+            public void onFailure(Throwable t) {
+                runOnUiThread(() -> {
+                    TextView tvTitle = findViewById(R.id.tvAdviceTitle);
+                    if (tvTitle != null) {
+                        tvTitle.setText("Не удалось загрузить совет");
+                    }
+                    // Выводим ошибку в лог, чтобы понять, что не так (ключ, интернет и т.д.)
+                    t.printStackTrace();
+                });
+            }
+        }, Executors.newSingleThreadExecutor());
     }
 
     private void showSourceSelectionDialog() {
@@ -383,52 +416,75 @@ public class MainActivity2 extends AppCompatActivity {
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) cameraLauncher.launch(takePictureIntent);
     }
 
-    private void sendImageToAI(Bitmap bitmap) {
-        String prompt;
-        String selectedApiKey;
 
-        // Оставляем твои промпты без изменений, меняем только ключи
-        if (currentMode.equals("detect")) {
-            prompt = "Инструкция: Если на фото растение, начни ответ со слова РАСТЕНИЕ. Если на фото НЕ растение, со фразы Not plant. " +
-                    "Далее: если растение, напиши название и краткое описание. На русском языке.";
-            selectedApiKey = API_KEY_DETECT;
-        } else {
-            prompt = "Инструкция: Если на фото растение, начни ответ со слова РАСТЕНИЕ. Если на фото НЕ растение, начни со фразы Not plant. " +
-                    "Далее: если растение, проведи диагностику болезней и дай советы по лечению. На русском языке.";
-            selectedApiKey = API_KEY_DIAGNOSE;
-
+    private void sendImageToAI(Bitmap bitmap, int attempt) {
+        if (attempt > 2) {
+            hideLoading();
+            Toast.makeText(this, "Сервер перегружен 😕 Попробуй позже", Toast.LENGTH_LONG).show();
+            return;
         }
         showLoading("Анализирую фото... 🌱");
-        // Используем выбранный ключ и модель 1.5-flash для стабильности
-        GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", selectedApiKey);
-        GenerativeModelFutures model = GenerativeModelFutures.from(gm);
+        String prompt;
+        String selectedApiKey;
+                if (currentMode.equals("detect")) {
+                    prompt = "Инструкция: Если на фото растение, начни ответ со слова РАСТЕНИЕ. Если на фото НЕ растение, со фразы Not plant. " +
+                            "Далее: если растение, напиши название и краткое описание. На русском языке.";
+                    selectedApiKey = API_KEY_DETECT;
+                } else {
+                    prompt = "Инструкция: Если на фото растение, начни ответ со слова РАСТЕНИЕ. Если на фото НЕ растение, начни со фразы Not plant. " +
+                            "Далее: если растение, проведи диагностику болезней и дай советы по лечению. На русском языке.";
+                    selectedApiKey = API_KEY_DIAGNOSE;
+                }
 
-        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 1024, 1024, true);
-        Content content = new Content.Builder().addImage(scaled).addText(prompt).build();
+                GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", selectedApiKey);
+                GenerativeModelFutures model = GenerativeModelFutures.from(gm);
 
-        Executor executor = Executors.newSingleThreadExecutor();
-        ListenableFuture<GenerateContentResponse> response = model.generateContent(content);
+                Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 512, 512, true);
 
-        Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
-            @Override
-            public void onSuccess(GenerateContentResponse result) {
-                runOnUiThread(() -> {
-                    // 2. Скрываем загрузку, когда пришел ответ
-                    hideLoading();
-                    showResultSheet(result.getText(), true);
-                });
+                Content content = new Content.Builder()
+                        .addImage(scaled)
+                        .addText(prompt)
+                        .build();
+
+                ListenableFuture<GenerateContentResponse> response = model.generateContent(content);
+
+                Futures.addCallback(response, new FutureCallback<>() {
+
+                    @Override
+                    public void onSuccess(GenerateContentResponse result) {
+                        runOnUiThread(() -> {
+                            hideLoading();
+
+                            String text = result.getText();
+                            if (text == null) text = "Нет ответа";
+
+                            showResultSheet(text, true);
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+
+                        String msg = t.getMessage();
+
+                        if (msg != null && msg.contains("503")) {
+                            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                                sendImageToAI(bitmap, attempt + 1);
+                            }, 2000);
+                        } else {
+                            runOnUiThread(() -> {
+                                hideLoading();
+                                Toast.makeText(MainActivity2.this,
+                                        "Ошибка: " + msg,
+                                        Toast.LENGTH_LONG).show();
+                            });
+                        }
+
+                        t.printStackTrace();
+                    }
+
+                }, executor);
             }
-
-            @Override
-            public void onFailure(Throwable t) {
-                runOnUiThread(() -> {
-                    // 3. Скрываем загрузку, если что-то пошло не так
-                    hideLoading();
-                    Toast.makeText(MainActivity2.this, "Ошибка: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                });
-            }
-        }, executor);
-    }
 
     @SuppressLint("MissingInflatedId")
     private void showResultSheet(String text, boolean isPhotoResult) {

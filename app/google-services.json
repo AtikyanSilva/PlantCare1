@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "300279061953",
+    "project_id": "silvaapp-d7898",
+    "storage_bucket": "silvaapp-d7898.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300279061953:android:fb21876c24f0389f61a340",
+        "android_client_info": {
+          "package_name": "atikyan.silva.plantcare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0Qy5AQ4DAHJIOFFT0XQS8bMQJOtQnYOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300279061953:android:afc2fa40bb1c40af61a340",
+        "android_client_info": {
+          "package_name": "atikyan.silva.silva"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0Qy5AQ4DAHJIOFFT0XQS8bMQJOtQnYOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

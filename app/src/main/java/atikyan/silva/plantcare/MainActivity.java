@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
-    private Button btnLogin, btnSignUp, btnGuest, btnNext;
+    private Button btnLogin, btnSignUp, btnGuest;
     private ImageView ivTogglePassword;
     private FirebaseAuth mAuth; // Добавь эту строку под ImageView
 
@@ -29,8 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
-        btnNext = findViewById(R.id.btnNextActivity); // ID должен совпадать с тем, что в XML
+        mAuth = FirebaseAuth.getInstance();// ID должен совпадать с тем, что в XML
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
@@ -132,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
                     });
         });
 
-        // Кнопка принудительного перехода (если нужно для тестов)
-        btnNext.setOnClickListener(v -> goToNextActivity());
     }
 
     private boolean isValidEmail(String email) {

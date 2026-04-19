@@ -115,16 +115,8 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             app:backgroundTint="@null"/>
-        <Button
-            android:id="@+id/btnNextActivity"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="12dp"
-            android:backgroundTint="#808080"
-            android:text="Open Next Screen"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+
+
 
     </LinearLayout>
 
