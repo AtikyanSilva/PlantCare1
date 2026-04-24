@@ -39,12 +39,24 @@ public class MainActivity3 extends AppCompatActivity {
         ViewCompat.setOnApplyWindowInsetsListener(bottomAppBar, (v, insets) -> {
             return WindowInsetsCompat.CONSUMED;
         });
+        CardView cardLightMeter = findViewById(R.id.cardLightMeter);
+        cardLightMeter.setOnClickListener(v -> {
+            // Переход на новый экран измерителя
+            Intent intent = new Intent(MainActivity3.this, LightMeterActivity.class);
+            startActivity(intent);
+        });
+
+        CardView cardWaterCalculator = findViewById(R.id.cardWaterCalc);
+        cardWaterCalculator.setOnClickListener(v -> {
+            // Переход на новый экран измерителя
+            Intent intent1 = new Intent(MainActivity3.this, WaterCalculatorActivity.class);
+            startActivity(intent1);
+        });
 
         // 1. Инициализация нижней навигации
         setupNavigation();
 
         // 2. Инициализация карточек инструментов
-        setupCards();
     }
 
     private void setupNavigation() {
@@ -74,23 +86,5 @@ public class MainActivity3 extends AppCompatActivity {
         });
     }
 
-    private void setupCards() {
-        // Находим карточки по ID, которые ты указала в XML
-        CardView cardReminder = findViewById(R.id.cardReminder);
-        CardView cardLight = findViewById(R.id.cardLight);
-        CardView cardWater = findViewById(R.id.cardWater);
-        CardView cardPot = findViewById(R.id.cardPot);
 
-        // Пример обработки нажатия на карточку "График"
-        cardReminder.setOnClickListener(v -> {
-            Toast.makeText(this, "Функция графика в разработке", Toast.LENGTH_SHORT).show();
-        });
-
-        // Пример для "Света"
-        cardLight.setOnClickListener(v -> {
-            Toast.makeText(this, "Датчик люксметра скоро будет доступен", Toast.LENGTH_SHORT).show();
-        });
-
-        // Аналогично можно добавить для остальных
-    }
 }

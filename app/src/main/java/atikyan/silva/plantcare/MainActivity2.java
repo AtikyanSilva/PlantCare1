@@ -63,10 +63,10 @@ public class MainActivity2 extends AppCompatActivity {
     private List<Problem> problemList;
     private final Executor executor = Executors.newSingleThreadExecutor();
 
-    private final String API_KEY_ADVICE = "AQ.Ab8RN6K93IzdKsD41rsFWITTGo3XbyXqkDqqYlmk5EKaxEJl6A";
-    private final String API_KEY_DETECT = "AQ.Ab8RN6I4WdSrKsmDuMTWWZTDcbekpVaaW29zTnKnIBYVGtedtQ";
-    private final String API_KEY_DIAGNOSE = "AQ.Ab8RN6J903Cy8hDGdmcNctn_qDYl7RujSisB_MX74mjpbeOrVg";
-    private final String API_KEY_SEARCH = "AQ.Ab8RN6LmajjcMRHt6XE3xVHshOVjqSVF6FL51BhwSxDyfVuHSg";
+    private final String API_KEY_ADVICE = "AIzaSyAMYS4Ta_YB-UQDmVq0G2r9zeP3dtEq9Iw";
+    private final String API_KEY_DETECT = "AIzaSyCo0qyegSgjRzKhy5d22pIVRUwGgs11zpQ";
+    private final String API_KEY_DIAGNOSE = "AIzaSyA4lZywjiB0Ov1lfpxN_XM4MMdKnBEw6PQ";
+    private final String API_KEY_SEARCH = "AIzaSyCtGKyV68lVKO5HZr9GgiZ4tuDR4eUw5cI";
     private static final int CAMERA_PERMISSION_CODE = 101;
     private ProgressDialog progressDialog;
     private void showLoading(String message) {

@@ -5,35 +5,34 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FDFDFB"
-    >
+    android:background="#FDFDFB">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="100dp">
+        android:paddingBottom="120dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="24dp"
+            android:paddingHorizontal="20dp"
             android:paddingTop="40dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
                 android:text="Инструменты"
                 android:textColor="#122A16"
-                android:textSize="28sp"
-                android:fontFamily="sans-serif-black" />
+                android:textSize="30sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Помощники для вашего сада"
+                android:text="Всё для точного ухода"
                 android:textColor="#5C7260"
                 android:textSize="16sp" />
 
@@ -42,220 +41,242 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:alignmentMode="alignMargins"
-                android:columnCount="2"
-                android:rowCount="2">
+                android:columnCount="2">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardReminder"
+                    android:id="@+id/cardLightMeter"
                     android:layout_width="0dp"
-                    android:layout_height="140dp"
+                    android:layout_height="190dp"
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
-                    app:cardCornerRadius="30dp"
-                    app:cardElevation="2dp">
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="32dp"
+                    app:cardElevation="4dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
                         <ImageView
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:src="@android:drawable/ic_lock_idle_alarm"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@android:drawable/ic_menu_compass"
                             app:tint="#1D5C3D" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Измеритель\nсвета"
+                            android:textAlignment="center"
+                            android:textColor="#122A16"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Уровень света"
+                            android:textColor="#5C7260"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardWaterCalc"
+                    android:layout_width="0dp"
+                    android:layout_height="190dp"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="32dp"
+                    app:cardElevation="4dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@android:drawable/ic_menu_mylocation"
+                            app:tint="#1D5C3D" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Калькулятор\nводы"
+                            android:textAlignment="center"
+                            android:textColor="#122A16"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Объем полива"
+                            android:textColor="#5C7260"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardCalendar"
+                    android:layout_width="0dp"
+                    android:layout_height="190dp"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="32dp"
+                    app:cardElevation="4dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@android:drawable/ic_menu_today"
+                            app:tint= "#1D5C3D" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Календарь\nухода"
+                            android:textAlignment="center"
+                            android:textColor="#122A16"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="График"
-                            android:textColor="#122A16"
-                            android:textStyle="bold" />
+                            android:textColor="#5C7260"
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardLight"
+                    android:id="@+id/cardPotMeter"
                     android:layout_width="0dp"
-                    android:layout_height="140dp"
+                    android:layout_height="190dp"
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
-                    app:cardCornerRadius="30dp"
-                    app:cardElevation="2dp">
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="32dp"
+                    app:cardElevation="4dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
                         <ImageView
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:src="@android:drawable/btn_star_big_on"
-                            app:tint="#FFB300" />
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@android:drawable/ic_menu_crop"
+                            app:tint="#1D5C3D" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="Свет (Lux)"
+                            android:layout_marginTop="10dp"
+                            android:text="Измеритель\nгоршка"
+                            android:textAlignment="center"
                             android:textColor="#122A16"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Размер горшка"
+                            android:textColor="#5C7260"
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardWater"
+                    android:id="@+id/cardCompass"
                     android:layout_width="0dp"
-                    android:layout_height="140dp"
+                    android:layout_height="190dp"
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
-                    app:cardCornerRadius="30dp"
-                    app:cardElevation="2dp">
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="32dp"
+                    app:cardElevation="4dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
                         <ImageView
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:src="@android:drawable/ic_menu_edit"
-                            app:tint="#2196F3" />
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@android:drawable/ic_menu_directions"
+                            app:tint="#1D5C3D" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="Вода"
+                            android:layout_marginTop="10dp"
+                            android:text="Компас\nдля окон"
+                            android:textAlignment="center"
                             android:textColor="#122A16"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ориентация"
+                            android:textColor="#5C7260"
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardPot"
+                    android:id="@+id/cardGrowthForecast"
                     android:layout_width="0dp"
-                    android:layout_height="140dp"
+                    android:layout_height="190dp"
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
-                    app:cardCornerRadius="30dp"
-                    app:cardElevation="2dp">
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="32dp"
+                    app:cardElevation="4dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
                         <ImageView
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:src="@android:drawable/ic_menu_sort_by_size"
-                            app:tint="#8D6E63" />
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@android:drawable/ic_menu_view"
+                            app:tint="#3A5A40" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="Горшок"
+                            android:layout_marginTop="10dp"
+                            android:text="Прогноз\nроста"
+                            android:textAlignment="center"
                             android:textColor="#122A16"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Будущий вид"
+                            android:textColor="#5C7260"
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
+
             </GridLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Общие проблемы"
-                android:textColor="#122A16"
-                android:textSize="22sp"
-                android:fontFamily="sans-serif-medium" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="26dp"
-                app:cardElevation="1dp"
-                app:cardBackgroundColor="#FDF4F4"> <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/advice" /> <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Желтеют листья"
-                    android:textColor="#B71C1C"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Скорее всего, вы заливаете растение. Проверьте почву."
-                    android:textColor="#555555"
-                    android:textSize="13sp" />
-
-            </LinearLayout>
-            </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:cardCornerRadius="26dp"
-                app:cardElevation="1dp"
-                app:cardBackgroundColor="#F1F5F2">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/advice" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Коричневые пятна"
-                            android:textColor="#122A16"
-                            android:textStyle="bold"
-                            android:textSize="16sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Ожоги от солнца. Уберите растение с прямых лучей."
-                            android:textColor="#555555"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
-        app:fabCradleVerticalOffset="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -263,11 +284,7 @@
         app:fabAlignmentMode="center"
         app:fabCradleMargin="8dp"
         app:fabCradleRoundedCornerRadius="15dp"
-        app:elevation="8dp"
-        android:layout_marginBottom="0dp"
-        app:paddingBottomSystemWindowInsets="false"
-        app:paddingLeftSystemWindowInsets="false"
-        app:paddingRightSystemWindowInsets="false">
+        app:elevation="8dp">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
@@ -280,21 +297,19 @@
             app:itemIconSize="26dp"
             app:itemPaddingTop="10dp"
             app:itemPaddingBottom="12dp"
-            android:textSize="14sp"
             app:itemIconTint="@color/nav_selector"
             app:itemTextColor="@color/nav_selector"
-            app:menu="@menu/bottom_menu"
-            android:paddingBottom="0dp"
-            />
+            app:menu="@menu/bottom_menu" />
     </com.google.android.material.bottomappbar.BottomAppBar>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_camera"
-        android:contentDescription="Camera"
         app:backgroundTint="#1D5C3D"
         app:tint="@android:color/white"
         app:layout_anchor="@id/bottomAppBar"
         app:elevation="12dp" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
