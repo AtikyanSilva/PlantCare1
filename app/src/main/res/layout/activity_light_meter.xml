@@ -1,91 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FDFDFB"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:background="#FAFDF7"
+    android:fillViewport="true">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="28dp">
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_revert"
-            app:tint="#1D5C3D" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:fontFamily="sans-serif-black"
-            android:text="Измеритель света"
-            android:textColor="#122A16"
-            android:textSize="20sp" />
-    </RelativeLayout>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="280dp"
-        android:layout_height="280dp"
-        android:layout_marginTop="60dp"
-        app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="140dp"
-        app:cardElevation="10dp">
-
-        <LinearLayout
+        <!-- Хедер: кнопка назад + заголовок -->
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="20dp">
 
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_back_btn"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="#1D5C3D" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-black"
+                android:text="Измеритель света"
+                android:textColor="#122A16"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <!-- Зона: листья + солнце -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="16dp">
+
+            <!-- Лист слева -->
             <ImageView
                 android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@android:drawable/btn_star_big_on"
-                app:tint="#FFCA28" />
+                android:layout_height="76dp"
+                android:layout_gravity="start|top"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:rotation="-30"
+                android:src="@drawable/ic_leaf_deco"
+                android:alpha="0.55" />
 
-            <TextView
-                android:id="@+id/tvLuxValue"
+            <!-- Лист справа -->
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="76dp"
+                android:layout_gravity="end|top"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="4dp"
+                android:rotation="30"
+                android:scaleX="-1"
+                android:src="@drawable/ic_leaf_deco"
+                android:alpha="0.55" />
+
+            <!-- Солнце по центру -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 LUX"
-                android:textColor="#1D5C3D"
-                android:textSize="48sp"
-                android:textStyle="bold" />
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Освещенность"
-                android:textColor="#5C7260"
-                android:textSize="16sp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                <!-- Лучи (анимируем rotation в Java) -->
+                <FrameLayout
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:layout_gravity="center">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        app:cardBackgroundColor="#E8F5E9"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="0dp">
+                    <!-- Фон лучей -->
+                    <ImageView
+                        android:id="@+id/ivSunRays"
+                        android:layout_width="180dp"
+                        android:layout_height="180dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_sun_rays" />
 
-        <TextView
-            android:id="@+id/tvLightAdvice"
+                    <!-- Ядро солнца (круг с данными) -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardSunCore"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="#FFD000"
+                        app:cardCornerRadius="60dp"
+                        app:cardElevation="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvLuxValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-black"
+                                android:text="0"
+                                android:textColor="#7A4400"
+                                android:textSize="28sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium"
+                                android:text="LUX"
+                                android:textColor="#A06020"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </FrameLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- Полоска уровня -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:text="Направьте камеру или верхнюю часть телефона на источник света"
-            android:textAlignment="center"
-            android:textColor="#1D5C3D"
-            android:textSize="16sp" />
-    </androidx.cardview.widget.CardView>
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="28dp"
+            android:orientation="vertical">
 
-</LinearLayout>
+            <!-- Подписи уровней -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="Темно"
+                    android:textColor="#5C7260"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Умеренно"
+                    android:textColor="#5C7260"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="Ярко"
+                    android:textColor="#5C7260"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <!-- Градиентная полоска -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="5dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@drawable/bg_light_bar"
+                    android:layout_gravity="center_vertical" />
+
+                <!-- Бегунок -->
+                <View
+                    android:id="@+id/viewLevelThumb"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="start|center_vertical"
+                    android:background="@drawable/bg_level_thumb" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Карточка совета -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardAdvice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="#E8F5E9"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/viewStatusDot"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:background="@drawable/bg_status_dot" />
+
+                    <TextView
+                        android:id="@+id/tvLightStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="sans-serif-black"
+                        android:text="Слабое освещение"
+                        android:textColor="#122A16"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvLightAdvice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="6dp"
+                    android:text="Направьте телефон на источник света"
+                    android:textColor="#3A6040"
+                    android:textSize="13sp"
+                    android:lineSpacingMultiplier="1.4" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Подходящие растения -->
+        <LinearLayout
+            android:id="@+id/layoutPlants"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:gravity="center"
+            android:orientation="horizontal" />
+
+    </LinearLayout>
+</ScrollView>

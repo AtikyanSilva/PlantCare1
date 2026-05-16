@@ -5,15 +5,34 @@
     android:viewportHeight="24"
     android:tint="?attr/colorControlNormal">
 
+    <!-- Stem -->
     <path
         android:fillColor="@android:color/white"
-        android:pathData="M12,3L4,9V19C4,20.1 4.9,21 6,21H18C19.1,21 20,20.1 20,19V9L12,3ZM18,19H6V10L12,5.5L18,10V19Z" />
+        android:pathData="M12,14L12,9"
+        android:strokeWidth="1.7"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"/>
 
+    <!-- Left leaf -->
     <path
         android:fillColor="@android:color/white"
-        android:pathData="M11,16.5c0,0 3.5,-0.5 4.5,-4c0.5,-1.8 -0.8,-3 -1.8,-3.5c0.5,1.3 0,3.5 -2.7,5.5L11,16.5z" />
+        android:fillAlpha="0.6"
+        android:pathData="M12,12C12,12 9.5,10 7,11C7.5,7.5 11,7 12,9Z"/>
 
+    <!-- Right leaf -->
     <path
         android:fillColor="@android:color/white"
-        android:pathData="M11,16.5L11,13c0,-0.8 0.4,-1.5 1,-2" />
+        android:pathData="M12,10C12,10 14.5,8 17,9C16.5,5.5 13,5 12,7Z"/>
+
+    <!-- Pot body -->
+    <path
+        android:fillColor="@android:color/white"
+        android:fillAlpha="0.75"
+        android:pathData="M8,14L16,14L15,19L9,19Z"/>
+
+    <!-- Pot rim -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M9.5,19L14.5,19C14.5,19.83 13.88,20.5 13.12,20.5L10.88,20.5C10.12,20.5 9.5,19.83 9.5,19Z"/>
+
 </vector>

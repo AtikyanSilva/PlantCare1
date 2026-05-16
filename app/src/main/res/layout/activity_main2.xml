@@ -10,15 +10,12 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_anchorGravity="top"
-        android:layout_marginBottom="72dp"
         android:clipToPadding="false"
-        android:paddingBottom="140dp">
+        android:paddingBottom="88dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="24dp"
             android:paddingTop="50dp">
@@ -180,6 +177,7 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -188,6 +186,7 @@
                 android:textColor="#122A16"
                 android:textSize="22sp"
                 android:fontFamily="sans-serif-medium" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCommonProblems"
                 android:layout_width="match_parent"
@@ -275,57 +274,161 @@
                         android:scaleType="centerCrop"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
             <Button
                 android:id="@+id/btnLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Выйти из аккаунта" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        app:fabCradleVerticalOffset="0dp"
+
+    <!-- ═══════════════════════════════════════════════════
+         CUSTOM BOTTOM NAVIGATION (ИСПРАВЛЕНО)
+         ═══════════════════════════════════════════════════ -->
+    <!-- ══════════════════════════════
+          5. НАВБАР с FAB по центру
+          ══════════════════════════════ -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:layout_gravity="bottom"
-        android:backgroundTint="#FFFFFF"
-        app:fabAlignmentMode="center"
-        app:fabCradleMargin="8dp"
-        app:fabCradleRoundedCornerRadius="15dp"
-        app:elevation="8dp"
-        android:layout_marginBottom="0dp"
-        app:paddingBottomSystemWindowInsets="false"
-        app:paddingLeftSystemWindowInsets="false"
-        app:paddingRightSystemWindowInsets="false">
+        android:background="#FFFFFF"
+        android:elevation="12dp">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNav"
+        <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <!-- Главная -->
+            <LinearLayout
+                android:id="@+id/navHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="6dp">
+                <ImageView
+                    android:id="@+id/iconHome"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_home"
+                    app:tint="#1F6B3A" />
+                <TextView
+                    android:id="@+id/labelHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Главная"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="#1F6B3A" />
+            </LinearLayout>
+
+            <!-- Инструменты -->
+            <LinearLayout
+                android:id="@+id/navInstruments"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="6dp">
+                <ImageView
+                    android:id="@+id/iconInstruments"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_instruments"
+                    app:tint="#A0B5A4" />
+                <TextView
+                    android:id="@+id/labelInstruments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Инструменты"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="#A0B5A4" />
+            </LinearLayout>
+
+            <!-- FAB слот -->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <!-- AI Ботаник -->
+            <LinearLayout
+                android:id="@+id/navBotanist"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="6dp">
+                <ImageView
+                    android:id="@+id/iconBotanist"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_botanist"
+                    app:tint="#A0B5A4" />
+                <TextView
+                    android:id="@+id/labelBotanist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="AI Ботаник"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="#A0B5A4" />
+            </LinearLayout>
+
+            <!-- Мой сад -->
+            <LinearLayout
+                android:id="@+id/navGarden"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="6dp">
+                <ImageView
+                    android:id="@+id/iconGarden"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_garden"
+                    app:tint="#A0B5A4" />
+                <TextView
+                    android:id="@+id/labelGarden"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Мой сад"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="#A0B5A4" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- FAB поверх навбара по центру -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabCamera"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:background="@android:color/transparent"
-            app:elevation="0dp"
-            app:labelVisibilityMode="labeled"
-            app:itemIconSize="26dp"
-            app:itemPaddingTop="10dp"
-            app:itemPaddingBottom="12dp"
-            android:textSize="14sp"
-            app:itemIconTint="@color/nav_selector"
-            app:itemTextColor="@color/nav_selector"
-            app:menu="@menu/bottom_menu"
-            android:paddingBottom="0dp"
-            />
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_menu_camera"
+            android:contentDescription="Сканировать растение"
+            app:backgroundTint="#1F6B3A"
+            app:tint="@android:color/white"
+            app:fabSize="mini"
+            app:elevation="8dp"
+            app:borderWidth="0dp"
+            app:maxImageSize="22dp" />
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
+    </FrameLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_camera"
-        android:contentDescription="Camera"
-        app:backgroundTint="#1D5C3D"
-        app:tint="@android:color/white"
-        app:layout_anchor="@id/bottomAppBar"
-        app:elevation="12dp" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

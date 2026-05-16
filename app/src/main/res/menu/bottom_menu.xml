@@ -3,23 +3,18 @@
 
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/home"
+        android:icon="@drawable/ic_home"
         android:title="Главная" />
 
     <item
         android:id="@+id/nav_instruments"
         android:icon="@drawable/ic_instruments"
         android:title="Инструменты" />
-    <item
-        android:id="@+id/nav_placeholder"
-        android:title=""
-        android:icon="@android:color/transparent"
-        android:enabled="false" />
 
     <item
-        android:id="@+id/nav_interactive"
-        android:icon="@drawable/ic_interactive"
-        android:title="Интерактив" />
+        android:id="@+id/nav_botanist"
+        android:icon="@drawable/ic_botanist"
+        android:title="AI Ботаник" />
 
     <item
         android:id="@+id/nav_garden"

@@ -15,5 +15,6 @@
     <color name="sage_green">#5E7D6A</color>
     <color name="background_light">#F8F9F5</color>
     <color name="search_bg_color">#EFEEEC</color>
-
+    <color name="nav_active">#1F6B3A</color>
+    <color name="nav_inactive">#A0B5A4</color>
     </resources>
