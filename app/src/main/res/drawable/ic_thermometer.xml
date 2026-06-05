@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- Thermometer tube outer -->
+    <path
+        android:fillColor="#B0C8B8"
+        android:pathData="M22,8 Q22,5 24,5 Q26,5 26,8 L26,32 Q26,35 24,35 Q22,35 22,32 Z"/>
+
+    <!-- Thermometer tube inner (fill) -->
+    <path
+        android:fillColor="#E05050"
+        android:pathData="M23.2,20 Q23.2,19 24,19 Q24.8,19 24.8,20 L24.8,32 Q24.8,33 24,33 Q23.2,33 23.2,32 Z"/>
+
+    <!-- Thermometer bulb outer -->
+    <path
+        android:fillColor="#B0C8B8"
+        android:pathData="M18,36 A6,6 0 1 1 30,36 A6,6 0 1 1 18,36 Z"/>
+
+    <!-- Thermometer bulb fill -->
+    <path
+        android:fillColor="#E05050"
+        android:pathData="M20,36 A4,4 0 1 1 28,36 A4,4 0 1 1 20,36 Z"/>
+
+    <!-- Bulb shine -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.4"
+        android:pathData="M21,34 A2,2 0 1 1 25,34 A2,2 0 1 1 21,34 Z"/>
+
+    <!-- Tick marks -->
+    <path
+        android:strokeColor="#7A9A85"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M26,12 L29,12"/>
+    <path
+        android:strokeColor="#7A9A85"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M26,17 L29,17"/>
+    <path
+        android:strokeColor="#7A9A85"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M26,22 L29,22"/>
+    <path
+        android:strokeColor="#7A9A85"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M26,27 L29,27"/>
+
+</vector>

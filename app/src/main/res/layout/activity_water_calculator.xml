@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F4F0"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="40dp">
+
+        <!-- ════ HEADER: кнопка назад + гномик + заголовок ════ -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="4dp">
+
+            <!-- Кнопка назад (как в LightMeter) -->
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_back_btn"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="#1D5C3D" />
+
+            <!-- Центр: гномик + заголовок вместе -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- Гномик -->
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_gnome_water"
+                    android:scaleType="fitCenter" />
+
+                <!-- Заголовок -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Калькулятор воды"
+                    android:textColor="#122A16"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <!-- Подзаголовок -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="16dp"
+            android:text="Рассчитайте норму полива 🌿"
+            android:textColor="#6D8F72"
+            android:textSize="13sp" />
+
+        <!-- ════ Карточка: Название растения ════ -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="18dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Название растения"
+                        android:textColor="#3A4D3A"
+                        android:textSize="13sp" />
+
+                    <EditText
+                        android:id="@+id/etPlantName"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:background="@null"
+                        android:hint="Например: Monstera"
+                        android:inputType="textCapSentences"
+                        android:padding="0dp"
+                        android:textColor="#1C2E1C"
+                        android:textColorHint="#B0C4B1"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E8DF" />
+                </LinearLayout>
+
+                <!-- Иконка двух листьев (ic_leaf_deco) -->
+                <ImageView
+                    android:layout_width="46dp"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_leaf_deco"
+                    android:scaleType="fitCenter" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- ════ Карточка: Диаметр горшка ════ -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="18dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Диаметр горшка (см)"
+                        android:textColor="#3A4D3A"
+                        android:textSize="13sp" />
+
+                    <EditText
+                        android:id="@+id/etPotSize"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:background="@null"
+                        android:hint="Введите размер"
+                        android:inputType="numberDecimal"
+                        android:padding="0dp"
+                        android:textColor="#1C2E1C"
+                        android:textColorHint="#B0C4B1"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E8DF" />
+                </LinearLayout>
+
+                <!-- Иконка горшка (ic_pot_card) -->
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_pot_card"
+                    android:scaleType="fitCenter" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- ════ Карточка: Температура (SeekBar) ════ -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="18dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Температура"
+                        android:textColor="#3A4D3A"
+                        android:textSize="13sp" />
+
+                    <SeekBar
+                        android:id="@+id/seekTemperature"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="40"
+                        android:progress="20"
+                        android:progressTint="#2E7D45"
+                        android:thumbTint="#2E7D45" />
+
+                    <TextView
+                        android:id="@+id/tvTemperatureValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="20°C"
+                        android:textColor="#2E7D45"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- Иконка термометра (ic_thermometer) -->
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="14dp"
+                    android:src="@drawable/ic_thermometer"
+                    android:scaleType="fitCenter" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- ════ Карточка: Влажность почвы (Spinner) ════ -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="18dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Влажность почвы"
+                        android:textColor="#3A4D3A"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/spinnerSoilMoisture"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:textSize="15sp" />
+
+                        <!-- Стрелка dropdown -->
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_arrow_back"
+                            android:rotation="-90"
+                            android:alpha="0.5"
+                            app:tint="#5A7A60" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E8DF" />
+                </LinearLayout>
+
+                <!-- Иконка капля+лист (ic_soil_moisture) -->
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_soil_moisture"
+                    android:scaleType="fitCenter" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- ════ Карточка: Освещение (Spinner) ════ -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="18dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Освещение"
+                        android:textColor="#3A4D3A"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/spinnerLight"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:textSize="15sp" />
+
+                        <!-- Стрелка dropdown -->
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_arrow_back"
+                            android:rotation="-90"
+                            android:alpha="0.5"
+                            app:tint="#5A7A60" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E8DF" />
+                </LinearLayout>
+
+                <!-- Иконка солнце+лист (ic_sun_leaf) -->
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_sun_leaf"
+                    android:scaleType="fitCenter" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- ════ Кнопка расчёта ════ -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCalculate"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Посчитать количество воды"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:backgroundTint="#2E7D45"
+            app:cornerRadius="16dp"
+            app:elevation="0dp" />
+
+        <!-- ════ Карточка результата (скрыта) ════ -->
+        <LinearLayout
+            android:id="@+id/cardResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/bg_result_card"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="18dp"
+            android:visibility="gone">
+
+            <!-- Иконка лейки (гномик) -->
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="64dp"
+                android:layout_marginEnd="14dp"
+                android:src="@drawable/ic_gnome_water"
+                android:scaleType="fitCenter" />
+
+            <!-- Текст результата -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Рекомендуемое количество воды"
+                    android:textColor="#6B8C71"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvWaterResult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:text="0 мл"
+                    android:textColor="#2E7D45"
+                    android:textSize="34sp" />
+
+                <TextView
+                    android:id="@+id/tvFrequency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="на один полив"
+                    android:textColor="#6B8C71"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ════ Совет ИИ (скрыт) ════ -->
+        <LinearLayout
+            android:id="@+id/layoutTip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_info_strip"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="14dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_leaf_deco"
+                app:tint="#1F6B3A" />
+
+            <TextView
+                android:id="@+id/tvWaterNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:lineSpacingExtra="3dp"
+                android:text=""
+                android:textColor="#1C2E1C"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- ════ Кнопка напоминания (скрыта) ════ -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddReminder"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Добавить напоминание о поливе"
+            android:textAllCaps="false"
+            android:textColor="#1F6B3A"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:backgroundTint="#FFFFFF"
+            app:cornerRadius="14dp"
+            app:elevation="0dp"
+            app:strokeColor="#1F6B3A"
+            app:strokeWidth="1.5dp"
+            app:icon="@drawable/ic_water_drop"
+            app:iconTint="#1F6B3A"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp" />
+
+        <!-- Скрытые layout-заглушки для совместимости с Java -->
+        <LinearLayout android:id="@+id/labelPlantType"
+            android:layout_width="match_parent" android:layout_height="0dp"
+            android:visibility="gone" android:orientation="horizontal" />
+        <LinearLayout android:id="@+id/layoutPlantType"
+            android:layout_width="match_parent" android:layout_height="0dp"
+            android:visibility="gone" android:orientation="horizontal" />
+        <LinearLayout android:id="@+id/layoutTemperature"
+            android:layout_width="match_parent" android:layout_height="0dp"
+            android:visibility="gone" android:orientation="horizontal" />
+        <LinearLayout android:id="@+id/layoutLocation"
+            android:layout_width="match_parent" android:layout_height="0dp"
+            android:visibility="gone" android:orientation="horizontal" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

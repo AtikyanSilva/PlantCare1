@@ -1,0 +1,93 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="160dp"
+    android:height="90dp"
+    android:viewportWidth="160"
+    android:viewportHeight="90">
+
+  <!-- Фон зелёный как у компаса -->
+  <path
+      android:pathData="M0,0h160v90h-160z"
+      android:fillColor="#edf8f1"/>
+
+  <!-- Стебель -->
+  <path
+      android:pathData="M80,72L80,44"
+      android:strokeWidth="3"
+      android:strokeColor="#2d7a3a"
+      android:strokeLineCap="round"
+      android:fillColor="#00000000"/>
+
+  <!-- Листик левый -->
+  <path
+      android:pathData="M80,58Q68,52 66,44Q74,46 78,56Z"
+      android:fillColor="#4a9a58"
+      android:fillAlpha="0.85"/>
+
+  <!-- Листик правый -->
+  <path
+      android:pathData="M80,54Q92,48 94,40Q86,42 82,52Z"
+      android:fillColor="#4a9a58"
+      android:fillAlpha="0.7"/>
+
+  <!-- Лепестки — 8 штук вокруг центра -->
+  <!-- верх -->
+  <path
+      android:pathData="M80,43Q77,34 80,26Q83,34 80,43Z"
+      android:fillColor="#f5a0b0"
+      android:fillAlpha="0.9"/>
+  <!-- верх-право -->
+  <path
+      android:pathData="M80,43Q87,37 93,31Q89,39 80,43Z"
+      android:fillColor="#f5a0b0"
+      android:fillAlpha="0.85"/>
+  <!-- право -->
+  <path
+      android:pathData="M80,43Q89,46 97,43Q89,40 80,43Z"
+      android:fillColor="#f5a0b0"
+      android:fillAlpha="0.9"/>
+  <!-- низ-право -->
+  <path
+      android:pathData="M80,43Q87,50 93,56Q88,48 80,43Z"
+      android:fillColor="#f5a0b0"
+      android:fillAlpha="0.85"/>
+  <!-- низ -->
+  <path
+      android:pathData="M80,43Q77,52 80,60Q83,52 80,43Z"
+      android:fillColor="#f5a0b0"
+      android:fillAlpha="0.9"/>
+  <!-- низ-лево -->
+  <path
+      android:pathData="M80,43Q73,50 67,56Q72,48 80,43Z"
+      android:fillColor="#f5a0b0"
+      android:fillAlpha="0.85"/>
+  <!-- лево -->
+  <path
+      android:pathData="M80,43Q71,46 63,43Q71,40 80,43Z"
+      android:fillColor="#f5a0b0"
+      android:fillAlpha="0.9"/>
+  <!-- верх-лево -->
+  <path
+      android:pathData="M80,43Q73,37 67,31Q71,39 80,43Z"
+      android:fillColor="#f5a0b0"
+      android:fillAlpha="0.85"/>
+
+  <!-- Центр цветка -->
+  <path
+      android:pathData="M80,43m-7,0a7,7 0,1 1,14 0a7,7 0,1 1,-14 0"
+      android:fillColor="#f5d060"/>
+
+  <!-- Точки в центре -->
+  <path
+      android:pathData="M80,43m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0"
+      android:fillColor="#c87820"/>
+
+  <!-- Маленькие декоративные листики снизу -->
+  <path
+      android:pathData="M55,76Q63,64 70,68Q67,78 57,78Z"
+      android:fillColor="#4a9a58"
+      android:fillAlpha="0.55"/>
+  <path
+      android:pathData="M105,74Q113,63 120,68Q116,78 107,77Z"
+      android:fillColor="#4a9a58"
+      android:fillAlpha="0.5"/>
+</vector>

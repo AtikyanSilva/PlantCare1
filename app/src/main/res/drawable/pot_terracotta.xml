@@ -1,0 +1,59 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+
+    <!-- Plant leaves (green) -->
+    <!-- Left leaf -->
+    <path
+        android:pathData="M24,28 C18,22 14,18 20,14 C22,12 26,16 26,22 Z"
+        android:fillColor="#2D7A4A"/>
+    <!-- Center leaf tall -->
+    <path
+        android:pathData="M32,28 C32,20 30,12 32,8 C34,12 34,20 32,28 Z"
+        android:fillColor="#3A8F5A"/>
+    <!-- Right leaf -->
+    <path
+        android:pathData="M40,28 C46,22 50,18 44,14 C42,12 38,16 38,22 Z"
+        android:fillColor="#2D7A4A"/>
+    <!-- Small left leaf -->
+    <path
+        android:pathData="M28,30 C22,26 20,20 25,17 C27,16 29,20 30,25 Z"
+        android:fillColor="#4AAE6A"/>
+    <!-- Small right leaf -->
+    <path
+        android:pathData="M36,30 C42,26 44,20 39,17 C37,16 35,20 34,25 Z"
+        android:fillColor="#4AAE6A"/>
+
+    <!-- Stem -->
+    <path
+        android:pathData="M32,30 L32,38"
+        android:strokeColor="#3A8F5A"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"/>
+
+    <!-- Pot rim -->
+    <path
+        android:pathData="M20,38 C20,36 44,36 44,38 L44,40 C44,42 20,42 20,40 Z"
+        android:fillColor="#D2825A"/>
+
+    <!-- Pot body -->
+    <path
+        android:pathData="M22,40 L20,56 C20,57 44,57 44,56 L42,40 Z"
+        android:fillColor="#E09070"/>
+
+    <!-- Pot highlight/shading -->
+    <path
+        android:pathData="M26,42 L24,55"
+        android:strokeColor="#C97050"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"/>
+
+    <!-- Pot bottom -->
+    <path
+        android:pathData="M20,56 C20,58 44,58 44,56"
+        android:strokeColor="#C87050"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"/>
+</vector>

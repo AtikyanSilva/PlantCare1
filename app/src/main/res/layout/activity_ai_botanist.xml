@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="#F4F6F3">
+
+    <!-- ══════════════════════════════
+         1. ХЕДЕР: Флора
+         ══════════════════════════════ -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E8F0E6">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="12dp"
+            android:gravity="bottom">
+
+            <ImageView
+                android:id="@+id/floraCharacter"
+                android:layout_width="64dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_flora_character"
+                android:scaleType="fitEnd"
+                android:layout_marginEnd="12dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/floraGreeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bubble_flora"
+                    android:text="Привет! Я Флора. Расскажите о своём растении — помогу!"
+                    android:textColor="#1C2E1C"
+                    android:textSize="13sp"
+                    android:lineSpacingMultiplier="1.4"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="10dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="6dp">
+
+                    <View
+                        android:layout_width="7dp"
+                        android:layout_height="7dp"
+                        android:background="@drawable/dot_online"
+                        android:layout_marginEnd="5dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="онлайн"
+                        android:textSize="11sp"
+                        android:textColor="#3A6A42"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- ══════════════════════════════
+         2. ЧАТ (растягивается на всё свободное место)
+         ══════════════════════════════ -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false"
+        android:background="#F4F6F3" />
+
+    <!-- ══════════════════════════════
+         3. ЧАСТЫЕ ВОПРОСЫ (чипы)
+         ══════════════════════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="4dp"
+        android:background="#F4F6F3">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ЧАСТЫЕ ВОПРОСЫ"
+            android:textColor="#9AAC90"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="6dp" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/chipContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical" />
+        </HorizontalScrollView>
+    </LinearLayout>
+
+    <!-- ══════════════════════════════
+         4. ПОЛЕ ВВОДА
+         ══════════════════════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="#FFFFFF"
+        android:elevation="4dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/input_bg_chat"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:layout_marginEnd="10dp">
+
+            <EditText
+                android:id="@+id/etMessage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="Спросите Флору..."
+                android:textColorHint="#A8B7AD"
+                android:textSize="13sp"
+                android:textColor="#1C2E1C"
+                android:maxLines="3"
+                android:inputType="textMultiLine|textCapSentences"
+                android:imeOptions="actionSend" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btnSend"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@drawable/ic_send"
+            android:background="@drawable/btn_send_bg"
+            android:padding="13dp"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
+
+    <!-- ══════════════════════════════
+         5. НАВБАР с FAB по центру
+         ══════════════════════════════ -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="#FFFFFF"
+        android:elevation="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <!-- Главная -->
+            <LinearLayout
+                android:id="@+id/navHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="6dp">
+                <ImageView
+                    android:id="@+id/iconHome"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_home"
+                    app:tint="#A0B5A4" />
+                <TextView
+                    android:id="@+id/labelHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Главная"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="#A0B5A4" />
+            </LinearLayout>
+
+            <!-- Инструменты -->
+            <LinearLayout
+                android:id="@+id/navInstruments"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="6dp">
+                <ImageView
+                    android:id="@+id/iconInstruments"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_instruments"
+                    app:tint="#A0B5A4" />
+                <TextView
+                    android:id="@+id/labelInstruments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Инструменты"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="#A0B5A4" />
+            </LinearLayout>
+
+            <!-- FAB слот -->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <!-- AI Ботаник -->
+            <LinearLayout
+                android:id="@+id/navBotanist"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="6dp">
+                <ImageView
+                    android:id="@+id/iconBotanist"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_botanist"
+                    app:tint="#1F6B3A" />
+                <TextView
+                    android:id="@+id/labelBotanist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="AI Ботаник"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="#1F6B3A" />
+            </LinearLayout>
+
+            <!-- Мой сад -->
+            <LinearLayout
+                android:id="@+id/navGarden"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="6dp">
+                <ImageView
+                    android:id="@+id/iconGarden"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_garden"
+                    app:tint="#A0B5A4" />
+                <TextView
+                    android:id="@+id/labelGarden"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Мой сад"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="#A0B5A4" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- FAB поверх навбара по центру -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_menu_camera"
+            android:contentDescription="Сканировать растение"
+            app:backgroundTint="#1F6B3A"
+            app:tint="@android:color/white"
+            app:fabSize="mini"
+            app:elevation="8dp"
+            app:borderWidth="0dp"
+            app:maxImageSize="22dp" />
+
+    </FrameLayout>
+
+</LinearLayout>

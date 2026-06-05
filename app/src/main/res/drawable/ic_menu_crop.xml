@@ -1,0 +1,54 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="160dp"
+    android:height="90dp"
+    android:viewportWidth="160"
+    android:viewportHeight="90">
+
+  <!-- Фон лавандовый как в оригинале сообщества -->
+  <path
+      android:pathData="M0,0h160v90h-160z"
+      android:fillColor="#ede8f5"/>
+
+  <!-- Центральная фигура (большая) — голова -->
+  <path
+      android:pathData="M80,22m-9,0a9,9 0,1 1,18 0a9,9 0,1 1,-18 0"
+      android:fillColor="#7a6aaa"
+      android:fillAlpha="0.85"/>
+  <!-- Центральная фигура — тело -->
+  <path
+      android:pathData="M63,55Q65,40 80,40Q95,40 97,55Q95,62 80,62Q65,62 63,55Z"
+      android:fillColor="#7a6aaa"
+      android:fillAlpha="0.7"/>
+
+  <!-- Левая фигура — голова -->
+  <path
+      android:pathData="M52,28m-7,0a7,7 0,1 1,14 0a7,7 0,1 1,-14 0"
+      android:fillColor="#9a8ac0"
+      android:fillAlpha="0.75"/>
+  <!-- Левая фигура — тело -->
+  <path
+      android:pathData="M38,58Q40,46 52,46Q64,46 66,58Q63,64 52,64Q40,64 38,58Z"
+      android:fillColor="#9a8ac0"
+      android:fillAlpha="0.6"/>
+
+  <!-- Правая фигура — голова -->
+  <path
+      android:pathData="M108,28m-7,0a7,7 0,1 1,14 0a7,7 0,1 1,-14 0"
+      android:fillColor="#9a8ac0"
+      android:fillAlpha="0.75"/>
+  <!-- Правая фигура — тело -->
+  <path
+      android:pathData="M94,58Q96,46 108,46Q120,46 122,58Q119,64 108,64Q96,64 94,58Z"
+      android:fillColor="#9a8ac0"
+      android:fillAlpha="0.6"/>
+
+  <!-- Декоративные листики -->
+  <path
+      android:pathData="M30,74Q40,62 48,67Q46,78 36,77Z"
+      android:fillColor="#4a9a58"
+      android:fillAlpha="0.6"/>
+  <path
+      android:pathData="M118,72Q128,61 136,66Q133,77 123,76Z"
+      android:fillColor="#4a9a58"
+      android:fillAlpha="0.55"/>
+</vector>

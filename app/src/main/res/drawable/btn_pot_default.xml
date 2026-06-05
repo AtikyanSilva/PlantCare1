@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#221F6B3A">
+
+    <!-- Маска -->
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFFFF"/>
+            <corners android:radius="14dp"/>
+        </shape>
+    </item>
+
+    <!-- Обычное состояние — белая карточка без обводки -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF"/>
+            <corners android:radius="14dp"/>
+            <stroke android:width="0.5dp" android:color="#E0E0E0"/>
+        </shape>
+    </item>
+
+</ripple>

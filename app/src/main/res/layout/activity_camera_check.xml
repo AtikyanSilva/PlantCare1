@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="#FDFDFB"
+    android:padding="20dp">
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@android:drawable/ic_menu_camera"
+        android:tint="#1D5C3D" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ВРЕМЯ ПОЛИВА!"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#122A16"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Звук не выключится, пока вы не сделаете фото растения"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btnCapture"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="СДЕЛАТЬ ФОТО"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="#1D5C3D"/>
+
+    <Button
+        android:id="@+id/btnSnooze"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Отложить на 5 мин"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_marginTop="10dp"
+        android:textColor="#5C7260"/>
+
+</LinearLayout>

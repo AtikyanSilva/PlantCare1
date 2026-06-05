@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="16dp"
+    android:height="18dp"
+    android:viewportWidth="80"
+    android:viewportHeight="100">
+
+    <!-- Head -->
+    <path
+        android:fillColor="#FDE8C8"
+        android:pathData="M40,0 C51.6,0 62,10.4 62,22 C62,33.6 51.6,44 40,44 C28.4,44 18,33.6 18,22 C18,10.4 28.4,0 40,0 Z"/>
+
+    <!-- Left eye -->
+    <path
+        android:fillColor="#3D2B1F"
+        android:pathData="M29,20 C29,17.2 30.3,17 32,17 C33.7,17 35,17.2 35,20 C35,22.8 33.7,23 32,23 C30.3,23 29,22.8 29,20 Z"/>
+
+    <!-- Right eye -->
+    <path
+        android:fillColor="#3D2B1F"
+        android:pathData="M45,20 C45,17.2 46.3,17 48,17 C49.7,17 51,17.2 51,20 C51,22.8 49.7,23 48,23 C46.3,23 45,22.8 45,20 Z"/>
+
+    <!-- Smile -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#3D2B1F"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M35,28 Q40,32 45,28"/>
+
+    <!-- Leaf crown -->
+    <path
+        android:fillColor="#1F6B3A"
+        android:pathData="M28,8 Q40,2 52,8 Q48,14 40,12 Q32,14 28,8Z"/>
+
+</vector>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="56dp"
+    android:height="56dp"
+    android:viewportWidth="56"
+    android:viewportHeight="56">
+
+    <!-- Calendar body -->
+    <path
+        android:fillColor="#D6ECD9"
+        android:pathData="M6,14 Q6,10 10,10 L46,10 Q50,10 50,14 L50,50 Q50,54 46,54 L10,54 Q6,54 6,50 Z" />
+
+    <!-- Calendar header bar -->
+    <path
+        android:fillColor="#4A9660"
+        android:pathData="M6,10 Q6,6 10,6 L46,6 Q50,6 50,10 L50,22 L6,22 Z" />
+
+    <!-- Ring left -->
+    <path
+        android:fillColor="#2D7040"
+        android:strokeColor="#2D7040"
+        android:strokeWidth="0"
+        android:pathData="M18,2 Q20,2 20,4 L20,14 Q20,16 18,16 Q16,16 16,14 L16,4 Q16,2 18,2 Z" />
+
+    <!-- Ring right -->
+    <path
+        android:fillColor="#2D7040"
+        android:pathData="M38,2 Q40,2 40,4 L40,14 Q40,16 38,16 Q36,16 36,14 L36,4 Q36,2 38,2 Z" />
+
+    <!-- Grid dots - row 1 (rect x=12 y=27 w=6 h=4 rx=2 → rounded rect path) -->
+    <path android:fillColor="#8FC89A" android:pathData="M14,27 L16,27 Q18,27 18,29 L18,29 Q18,31 16,31 L14,31 Q12,31 12,29 L12,29 Q12,27 14,27 Z"/>
+    <path android:fillColor="#8FC89A" android:pathData="M24,27 L26,27 Q28,27 28,29 L28,29 Q28,31 26,31 L24,31 Q22,31 22,29 L22,29 Q22,27 24,27 Z"/>
+    <path android:fillColor="#8FC89A" android:pathData="M34,27 L36,27 Q38,27 38,29 L38,29 Q38,31 36,31 L34,31 Q32,31 32,29 L32,29 Q32,27 34,27 Z"/>
+    <path android:fillColor="#8FC89A" android:pathData="M44,27 L46,27 Q48,27 48,29 L48,29 Q48,31 46,31 L44,31 Q42,31 42,29 L42,29 Q42,27 44,27 Z"/>
+
+    <!-- Grid dots - row 2 -->
+    <path android:fillColor="#8FC89A" android:pathData="M14,35 L16,35 Q18,35 18,37 L18,37 Q18,39 16,39 L14,39 Q12,39 12,37 L12,37 Q12,35 14,35 Z"/>
+    <path android:fillColor="#8FC89A" android:pathData="M24,35 L26,35 Q28,35 28,37 L28,37 Q28,39 26,39 L24,39 Q22,39 22,37 L22,37 Q22,35 24,35 Z"/>
+    <path android:fillColor="#8FC89A" android:pathData="M34,35 L36,35 Q38,35 38,37 L38,37 Q38,39 36,39 L34,39 Q32,39 32,37 L32,37 Q32,35 34,35 Z"/>
+
+    <!-- Checkmark -->
+    <path
+        android:strokeColor="#4A9660"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M14,43 L20,49 L32,37" />
+
+    <!-- Small leaf decoration -->
+    <path
+        android:fillColor="#3A8C50"
+        android:pathData="M38,44 C38,40 42,38 44,40 C46,42 44,47 40,48 C39,47 38,46 38,44 Z" />
+
+</vector>

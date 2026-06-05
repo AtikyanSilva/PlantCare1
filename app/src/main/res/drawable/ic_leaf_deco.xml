@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="60dp"
+    android:height="76dp"
+    android:viewportWidth="60"
+    android:viewportHeight="76">
+
+    <!-- Тело листа -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M30,72 Q6,44 11,16 Q21,-2 30,6 Q39,-2 49,16 Q54,44 30,72Z" />
+
+    <!-- Центральная жилка -->
+    <path
+        android:strokeColor="#388E3C"
+        android:strokeWidth="1.5"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M30,72 L30,13" />
+
+    <!-- Боковые жилки -->
+    <path
+        android:strokeColor="#388E3C"
+        android:strokeWidth="1"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M30,50 L18,34" />
+    <path
+        android:strokeColor="#388E3C"
+        android:strokeWidth="1"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M30,38 L42,25" />
+    <path
+        android:strokeColor="#388E3C"
+        android:strokeWidth="1"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M30,28 L20,18" />
+</vector>
