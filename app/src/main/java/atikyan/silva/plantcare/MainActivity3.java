@@ -19,7 +19,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity3 extends AppCompatActivity {
 
-    // Nav tab IDs
     private static final int TAB_HOME        = 0;
     private static final int TAB_INSTRUMENTS = 1;
     private static final int TAB_BOTANIST    = 2;
@@ -27,7 +26,6 @@ public class MainActivity3 extends AppCompatActivity {
 
     private int currentTab = TAB_INSTRUMENTS;
 
-    // Nav views
     private LinearLayout navHome, navInstruments, navBotanist, navGarden;
     private ImageView iconHome, iconInstruments, iconBotanist, iconGarden;
     private TextView labelHome, labelInstruments, labelBotanist, labelGarden;
@@ -44,7 +42,6 @@ public class MainActivity3 extends AppCompatActivity {
             return insets;
         });
 
-        // Cards
         CardView cardLightMeter = findViewById(R.id.cardLightMeter);
         cardLightMeter.setOnClickListener(v ->
                 startActivity(new Intent(this, LightMeterActivity.class)));
@@ -55,7 +52,7 @@ public class MainActivity3 extends AppCompatActivity {
 
         CardView cardCalendar = findViewById(R.id.cardCalendar);
         cardCalendar.setOnClickListener(v ->
-                startActivity(new Intent(this, AddReminderActivity.class)));
+                startActivity(new Intent(this, RemindersActivity.class)));
 
         CardView cardPotMeter = findViewById(R.id.cardPotMeter);
         cardPotMeter.setOnClickListener(v ->
@@ -73,33 +70,28 @@ public class MainActivity3 extends AppCompatActivity {
     }
 
     private void setupNavigation() {
-        // Get nav item containers
+
         navHome        = findViewById(R.id.navHome);
         navInstruments = findViewById(R.id.navInstruments);
         navBotanist    = findViewById(R.id.navBotanist);
         navGarden      = findViewById(R.id.navGarden);
 
-        // Get icons
         iconHome        = findViewById(R.id.iconHome);
         iconInstruments = findViewById(R.id.iconInstruments);
         iconBotanist    = findViewById(R.id.iconBotanist);
         iconGarden      = findViewById(R.id.iconGarden);
 
-        // Get labels
         labelHome        = findViewById(R.id.labelHome);
         labelInstruments = findViewById(R.id.labelInstruments);
         labelBotanist    = findViewById(R.id.labelBotanist);
         labelGarden      = findViewById(R.id.labelGarden);
 
-        // FAB camera
         FloatingActionButton fabCamera = findViewById(R.id.fabCamera);
         fabCamera.setOnClickListener(v ->
-                startActivity(new Intent(this, CameraCheckActivity.class)));
+                startActivity(new Intent(this, PlantRecognizeActivity.class)));
 
-        // Set initial active tab
         setActiveTab(TAB_INSTRUMENTS);
 
-        // Click listeners
         navHome.setOnClickListener(v -> {
             Intent intent = new Intent(this, MainActivity2.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -126,7 +118,6 @@ public class MainActivity3 extends AppCompatActivity {
         int activeColor   = ContextCompat.getColor(this, R.color.nav_active);
         int inactiveColor = ContextCompat.getColor(this, R.color.nav_inactive);
 
-        // Reset all to inactive
         iconHome.setColorFilter(inactiveColor);
         iconInstruments.setColorFilter(inactiveColor);
         iconBotanist.setColorFilter(inactiveColor);
@@ -137,7 +128,6 @@ public class MainActivity3 extends AppCompatActivity {
         labelBotanist.setTextColor(inactiveColor);
         labelGarden.setTextColor(inactiveColor);
 
-        // Activate selected tab
         switch (tab) {
             case TAB_HOME:
                 iconHome.setColorFilter(activeColor);

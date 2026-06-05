@@ -25,15 +25,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantCare" >
         <activity
+            android:name=".PlantDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".MyGardenActivity"
             android:exported="false" />
         <activity
             android:name=".AddPlantActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".ChatMessage"
-            android:exported="false" />
         <activity
             android:name=".AiBotanistActivity"
             android:exported="false"
@@ -52,6 +52,11 @@
             android:exported="true"
             android:windowSoftInputMode="adjustPan" />
         <activity
+            android:name=".ProfileActivity"
+            android:label="Профиль"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true" >
             <intent-filter>
@@ -69,6 +74,14 @@
             android:screenOrientation="portrait"
             android:showWhenLocked="true"
             android:turnScreenOn="true" />
+        <activity
+            android:name=".PlantRecognizeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Transparent"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RemindersActivity"
+            android:exported="false" />
         <activity
             android:name=".AddReminderActivity"
             android:exported="false"

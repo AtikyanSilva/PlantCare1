@@ -35,15 +35,6 @@
                 android:layout_marginTop="3dp" android:text="Всё для точного ухода 🌿"
                 android:textColor="#7A957A" android:textSize="13sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp" android:paddingHorizontal="2dp" android:text="ОСВЕЩЕНИЕ И ВОДА"
-                android:textColor="#9AAC90" android:textSize="10sp"
-                android:textStyle="normal"
-                android:fontWeight="500"
-                android:letterSpacing="0.08" android:fontFamily="sans-serif-medium"
-                android:textAllCaps="true" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -163,17 +154,20 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingHorizontal="13dp" android:paddingTop="11dp" android:paddingBottom="13dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Компас для окон"
-                                android:textColor="#1C2E1C" android:textSize="13sp"
-                                android:textStyle="normal"
-                                android:fontWeight="500" />
+                                android:fontWeight="500"
+                                android:text="Какой ты цветок?"
+                                android:textColor="#1C2E1C"
+                                android:textSize="13sp"
+                                android:textStyle="normal" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp" android:text="Ориентация света"
+                                android:layout_marginTop="2dp" android:text="Узнай свой цветочный характер"
                                 android:textColor="#8AA088" android:textSize="11sp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -207,29 +201,19 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Прогноз роста"
+                                android:text="Идеальное растение"
                                 android:textColor="#1C2E1C" android:textSize="13sp"
                                 android:textStyle="normal"
                                 android:fontWeight="500" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp" android:text="Будущий вид"
+                                android:layout_marginTop="2dp" android:text="Зелёный компаньон"
                                 android:textColor="#8AA088" android:textSize="11sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp" android:paddingHorizontal="2dp" android:text="УХОД И СОСТОЯНИЕ"
-                android:textColor="#9AAC90" android:textSize="10sp"
-                android:textStyle="normal"
-                android:fontWeight="500"
-                android:letterSpacing="0.08" android:fontFamily="sans-serif-medium"
-                android:textAllCaps="true" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -250,6 +234,7 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="90dp" android:background="#FDF2EC">
+
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -264,14 +249,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Датчик почвы"
+                                android:text="Форум"
                                 android:textColor="#1C2E1C" android:textSize="13sp"
                                 android:textStyle="normal"
                                 android:fontWeight="500" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp" android:text="pH и влажность"
+                                android:layout_marginTop="2dp" android:text="Ботанический клуб"
                                 android:textColor="#8AA088" android:textSize="11sp" />
                         </LinearLayout>
                     </LinearLayout>

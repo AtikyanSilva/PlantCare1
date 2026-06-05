@@ -19,6 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String GUEST_EMAIL    = "innovationcampus26@gmail.com";
+    private static final String GUEST_PASSWORD = "Some1234@";
+
     private EditText etEmail, etPassword, etConfirmPassword;
     private Button btnLogin, btnSignUp, btnGuest;
     private ImageView ivTogglePassword, ivToggleConfirmPassword;
@@ -35,19 +38,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-        etEmail = findViewById(R.id.etEmail);
-        etPassword = findViewById(R.id.etPassword);
-        etConfirmPassword = findViewById(R.id.etConfirmPassword);
-        btnLogin = findViewById(R.id.btnLogin);
-        btnSignUp = findViewById(R.id.btnSignUp);
-        btnGuest = findViewById(R.id.btnGuest);
-        ivTogglePassword = findViewById(R.id.ivTogglePassword);
+        etEmail               = findViewById(R.id.etEmail);
+        etPassword            = findViewById(R.id.etPassword);
+        etConfirmPassword     = findViewById(R.id.etConfirmPassword);
+        btnLogin              = findViewById(R.id.btnLogin);
+        btnSignUp             = findViewById(R.id.btnSignUp);
+        btnGuest              = findViewById(R.id.btnGuest);
+        ivTogglePassword      = findViewById(R.id.ivTogglePassword);
         ivToggleConfirmPassword = findViewById(R.id.ivToggleConfirmPassword);
         layoutConfirmPassword = findViewById(R.id.layoutConfirmPassword);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            if (currentUser.isAnonymous() || currentUser.isEmailVerified()) {
+            boolean isGuest = GUEST_EMAIL.equals(currentUser.getEmail());
+            if (isGuest || currentUser.isEmailVerified()) {
                 goToNextActivity();
             }
         }
@@ -86,11 +90,10 @@ public class MainActivity extends AppCompatActivity {
 
         // ЛОГИКА ВХОДА
         btnLogin.setOnClickListener(v -> {
-            // Скрываем поле подтверждения при входе
             layoutConfirmPassword.setVisibility(View.GONE);
             etConfirmPassword.setText("");
 
-            String email = etEmail.getText().toString().trim();
+            String email    = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString();
 
             if (!isValidEmail(email)) {
@@ -108,25 +111,31 @@ public class MainActivity extends AppCompatActivity {
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            if (user != null && user.isEmailVerified()) {
-                                goToNextActivity();
-                            } else {
-                                Toast.makeText(this, "Пожалуйста, подтвердите Email в письме!", Toast.LENGTH_LONG).show();
-                                mAuth.signOut();
+                            if (user != null) {
+                                boolean isGuest = GUEST_EMAIL.equals(user.getEmail());
+                                if (isGuest || user.isEmailVerified()) {
+                                    goToNextActivity();
+                                } else {
+                                    Toast.makeText(this,
+                                            "Пожалуйста, подтвердите Email в письме!",
+                                            Toast.LENGTH_LONG).show();
+                                    mAuth.signOut();
+                                }
                             }
                         } else {
-                            Toast.makeText(this, "Ошибка входа: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this,
+                                    "Ошибка входа: " + task.getException().getMessage(),
+                                    Toast.LENGTH_SHORT).show();
                         }
                     });
         });
 
         // ЛОГИКА РЕГИСТРАЦИИ
         btnSignUp.setOnClickListener(v -> {
-            // Показываем поле подтверждения
             layoutConfirmPassword.setVisibility(View.VISIBLE);
 
-            String email = etEmail.getText().toString().trim();
-            String password = etPassword.getText().toString();
+            String email           = etEmail.getText().toString().trim();
+            String password        = etPassword.getText().toString();
             String confirmPassword = etConfirmPassword.getText().toString();
 
             if (!isValidEmail(email)) {
@@ -161,7 +170,9 @@ public class MainActivity extends AppCompatActivity {
                             if (user != null) {
                                 user.sendEmailVerification().addOnCompleteListener(verifyTask -> {
                                     if (verifyTask.isSuccessful()) {
-                                        Toast.makeText(this, "Регистрация успешна! Проверьте почту для подтверждения.", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(this,
+                                                "Регистрация успешна! Проверьте почту для подтверждения.",
+                                                Toast.LENGTH_LONG).show();
                                         layoutConfirmPassword.setVisibility(View.GONE);
                                         etConfirmPassword.setText("");
                                         etPassword.setText("");
@@ -170,43 +181,46 @@ public class MainActivity extends AppCompatActivity {
                                 });
                             }
                         } else {
-                            Toast.makeText(this, "Ошибка регистрации: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this,
+                                    "Ошибка регистрации: " + task.getException().getMessage(),
+                                    Toast.LENGTH_SHORT).show();
                         }
                     });
         });
 
-        // ЛОГИКА ГОСТЯ
+        // ГОСТЕВОЙ ВХОД — фиксированный аккаунт
         btnGuest.setOnClickListener(v -> {
-            mAuth.signInAnonymously()
+            btnGuest.setEnabled(false);
+            btnGuest.setText("Входим…");
+
+            mAuth.signInWithEmailAndPassword(GUEST_EMAIL, GUEST_PASSWORD)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(this, "Вход выполнен как гость", Toast.LENGTH_SHORT).show();
                             goToNextActivity();
                         } else {
-                            Toast.makeText(this, "Ошибка гостевого входа", Toast.LENGTH_SHORT).show();
+                            btnGuest.setEnabled(true);
+                            btnGuest.setText("Continue as Guest");
+                            Toast.makeText(this,
+                                    "Ошибка гостевого входа", Toast.LENGTH_SHORT).show();
                         }
                     });
         });
     }
 
-    /**
-     * Проверяет сложность пароля, возвращает текст ошибки или null если всё ок.
-     * Ошибка показывается прямо на поле (в "уголке").
-     */
     private String getPasswordError(String password) {
         if (password.length() < 8)
             return "Минимум 8 символов, загл. буква, цифра и спецсимвол (!@#$%...)";
         boolean hasUpper = false, hasLower = false, hasDigit = false, hasSpecial = false;
         String specials = "!@#$%^&*()_+-=[]{}|;':\",./<>?";
         for (char c : password.toCharArray()) {
-            if (Character.isUpperCase(c)) hasUpper = true;
-            else if (Character.isLowerCase(c)) hasLower = true;
-            else if (Character.isDigit(c)) hasDigit = true;
+            if (Character.isUpperCase(c))      hasUpper   = true;
+            else if (Character.isLowerCase(c)) hasLower   = true;
+            else if (Character.isDigit(c))     hasDigit   = true;
             else if (specials.indexOf(c) >= 0) hasSpecial = true;
         }
-        if (!hasUpper) return "Нужна заглавная буква (A-Z), цифра и спецсимвол (!@#$%...)";
-        if (!hasLower) return "Нужна строчная буква (a-z), цифра и спецсимвол (!@#$%...)";
-        if (!hasDigit) return "Нужна цифра (0-9) и спецсимвол (!@#$%...)";
+        if (!hasUpper)   return "Нужна заглавная буква (A-Z), цифра и спецсимвол (!@#$%...)";
+        if (!hasLower)   return "Нужна строчная буква (a-z), цифра и спецсимвол (!@#$%...)";
+        if (!hasDigit)   return "Нужна цифра (0-9) и спецсимвол (!@#$%...)";
         if (!hasSpecial) return "Нужен спецсимвол: !@#$%^&*()_+-= и т.д.";
         return null;
     }
@@ -216,8 +230,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToNextActivity() {
-        Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-        startActivity(intent);
+        startActivity(new Intent(MainActivity.this, MainActivity2.class));
         finish();
     }
 }

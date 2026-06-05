@@ -1,3 +1,4 @@
+import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
@@ -5,9 +6,7 @@ plugins {
 android {
 
     namespace = "atikyan.silva.plantcare"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "atikyan.silva.plantcare"
@@ -17,6 +16,33 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val localProps = Properties()
+        val localFile = rootProject.file("local.properties")
+        if (localFile.exists()) localProps.load(localFile.inputStream())
+
+        buildConfigField("String", "GEMINI_KEY_ADVICE",    "\"" + (localProps["GEMINI_KEY_ADVICE"]   ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_DETECT",    "\"" + (localProps["GEMINI_KEY_DETECT"]   ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_DIAGNOSE",  "\"" + (localProps["GEMINI_KEY_DIAGNOSE"] ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_SEARCH",    "\"" + (localProps["GEMINI_KEY_SEARCH"]   ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_BOTANIST",  "\"" + (localProps["GEMINI_KEY_BOTANIST"] ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_ADVICE2",   "\"" + (localProps["GEMINI_KEY_ADVICE2"]  ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_DETECT2",   "\"" + (localProps["GEMINI_KEY_DETECT2"]  ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_DIAGNOSE2", "\"" + (localProps["GEMINI_KEY_DIAGNOSE2"]?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_SEARCH2",   "\"" + (localProps["GEMINI_KEY_SEARCH2"]  ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_BOTANIST2", "\"" + (localProps["GEMINI_KEY_BOTANIST2"]?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_1",    "\"" + (localProps["GEMINI_KEY_1"]   ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_2",    "\"" + (localProps["GEMINI_KEY_2"]   ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_3",  "\"" + (localProps["GEMINI_KEY_3"] ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_4",    "\"" + (localProps["GEMINI_KEY_4"]   ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_5",  "\"" + (localProps["GEMINI_KEY_5"] ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_6",   "\"" + (localProps["GEMINI_KEY_6"]  ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_7",   "\"" + (localProps["GEMINI_KEY_7"]  ?: "") + "\"")
+        buildConfigField("String", "GEMINI_KEY_8", "\"" + (localProps["GEMINI_KEY_8"]?: "") + "\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -55,4 +81,5 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }
